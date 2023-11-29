@@ -42,7 +42,7 @@ export const AuthenticationProvider = ({ children }:any) => {
       }
 
       if (savedToken !== null) {
-        setPhoneNumber(savedToken);
+        setJwtToken(savedToken);
       }
     } catch (error) {
       console.error('Error loading authentication status:', error);
