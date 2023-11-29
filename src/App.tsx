@@ -14,6 +14,7 @@ import { AuthenticationProvider } from './services/AuthenticationContext';
 import Notes from './screens/Notes';
 import Account from './screens/Account';
 import SplashScreen from './screens/SplashScreen';
+import CreateFolder from './screens/CreateFolderScreen';
 
 
 export type RootStackParamList = {
@@ -21,18 +22,20 @@ export type RootStackParamList = {
   Welcome: undefined;
   Otp: { phoneNumber: string };
   Home: undefined;
+  CreateFolder: undefined;
 };
 
 const Tab = createBottomTabNavigator();
 
 function HomeTabs() {
   return (
-    <Tab.Navigator initialRouteName={"home"} tabBar={props => <TabBar {...props} />}>
-      <Tab.Screen name="home" component={HomeScreen} options={{headerShown:false}}/>
-      <Tab.Screen name="folder" component={Notes} options={{headerShown:false}} />
-      <Tab.Screen name="camera" component={Notes} options={{headerShown:false}} />
-      <Tab.Screen name="account" component={Account} options={{headerShown:false}}/>
-    </Tab.Navigator>
+    <Stack.Navigator initialRouteName="Splash">
+          <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown:false}} />
+          <Stack.Screen name="Otp" component={OtpScreen} options={{headerShown:false}} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
+          <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
+        </Stack.Navigator>
   );
 }
 
@@ -42,13 +45,12 @@ const App: React.FC  = () => {
   return (
     <AuthenticationProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Splash">
-          <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Otp" component={OtpScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Home" component={HomeTabs} options={{headerShown:false}}/>
-
-        </Stack.Navigator>
+        <Tab.Navigator initialRouteName={"home"} tabBar={props => <TabBar {...props} />}>
+      <Tab.Screen name="home" component={HomeTabs} options={{headerShown:false}}/>
+      <Tab.Screen name="folder" component={CreateFolder} options={{headerShown:false}} />
+      <Tab.Screen name="camera" component={Notes} options={{headerShown:false}} />
+      <Tab.Screen name="account" component={Account} options={{headerShown:false}}/>
+    </Tab.Navigator>
       </NavigationContainer>
     </AuthenticationProvider>
   );

@@ -50,8 +50,8 @@ export const checkPhoneNumber = async (
 ): Promise<ApiResponse> => {
   try {
     const body = {
-      phoneNumber:phoneNumber
-    } 
+      phoneNumber: phoneNumber
+    }
     const response: AxiosResponse<ApiResponse> = await api.post('/check', body);
     console.log(response.data)
     return response.data;
@@ -62,27 +62,61 @@ export const checkPhoneNumber = async (
 };
 
 export const generateOtp = async (
-    phoneNumber: string
-  ): Promise<ApiResponse> => {
-    try {
-      const response: AxiosResponse<ApiResponse> = await api.post('/generate-otp', { phoneNumber });
-      console.log(response.data)
-      return response.data;
-    } catch (error) {
-      console.error('Error in generateOtp call:', error);
-      throw error;
-    }
-  };
+  phoneNumber: string
+): Promise<ApiResponse> => {
+  try {
+    const response: AxiosResponse<ApiResponse> = await api.post('/generate-otp', { phoneNumber });
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in generateOtp call:', error);
+    throw error;
+  }
+};
 
-  export const verifyOtp = async (
-    phoneNumber: string, otp: any
-  ): Promise<ApiResponse> => {
-    try {
-      const response: AxiosResponse<ApiResponse> = await api.post('/verify-otp', { phoneNumber,otp });
-      console.log(response.data)
-      return response.data;
-    } catch (error) {
-      console.error('Error in generateOtp call:', error);
-      throw error;
-    }
-  };
+export const verifyOtp = async (
+  phoneNumber: string, otp: any
+): Promise<ApiResponse> => {
+  try {
+    const response: AxiosResponse<ApiResponse> = await api.post('/verify-otp', { phoneNumber, otp });
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in generateOtp call:', error);
+    throw error;
+  }
+};
+
+export const getFolders = async (
+  accountId: string, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-folders', { accountId } , {headers});
+    console.log("sfesdfsdfseiuheq38952y4938y239423========",response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in generateOtp call:', error);
+    throw error;
+  }
+};
+
+export const createFolder = async (
+  accountId: string, jwtToken: string, folderName: string, privacy: boolean
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/create-folder', { accountId, folderName, privacy } , {headers});
+    console.log("sfesdfsdfseiuheq38952y4938y239423========",response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in generateOtp call:', error);
+    throw error;
+  }
+};

@@ -9,6 +9,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import { useAuthentication } from '../services/AuthenticationContext';
+import FoldersList from '../components/FoldersList';
 
 const HomeScreen = ({ navigation }: any) => {
     const { isLoggedIn, logOut, username, jwtToken }: any = useAuthentication();
@@ -22,12 +23,14 @@ const HomeScreen = ({ navigation }: any) => {
         logOut();
         navigation.replace('Welcome');
     };
-
+    const handlePress = async () => {
+        navigation.push('CreateFolder')
+    }
     const isDarkMode = useColorScheme() === 'dark';
-
+    console.log(isLoggedIn, logOut, username, jwtToken )
     return (
         <View style={[
-            isDarkMode ? { backgroundColor: '#0e0f0f' } : { backgroundColor: '#0e0f0f' },
+            isDarkMode ? { backgroundColor: '#0e0f0f' } : { backgroundColor: '#FFF' },
             {
                 flex: 1,
                 overflow: "hidden",
@@ -53,13 +56,15 @@ const HomeScreen = ({ navigation }: any) => {
                 Welcome, {username}
             </Text>
             <View style={{height:150}}>
-                
+                <Text>{jwtToken}</Text>
             </View>
-            <Text  style={
-                [styles.darkText]}>{jwtToken}</Text>
+            <FoldersList jwtToken={jwtToken}/>
+            <Button title="Create Folder" onPress={handlePress}/>
+
             <View style={{height:150}}>
                 
             </View>
+
             <Button title="Logout" onPress={handleLogout} />
         </View>
     );
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     darkText: {
-        color: '#FFF',
+        color: '#000',
     },
     headingText: {
         fontSize: 26,

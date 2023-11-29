@@ -15,7 +15,7 @@ interface WelcomeScreenProps {
 }
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
-  const { isLoggedIn } = useAuthentication();
+  const { isLoggedIn, jwtToken } = useAuthentication();
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const [loading, setLoading] = useState(false);
