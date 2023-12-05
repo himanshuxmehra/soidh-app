@@ -15,6 +15,7 @@ import Notes from './screens/Notes';
 import Account from './screens/Account';
 import SplashScreen from './screens/SplashScreen';
 import CreateFolder from './screens/CreateFolderScreen';
+import FolderScreen from './screens/FolderScreen';
 
 
 export type RootStackParamList = {
@@ -23,6 +24,7 @@ export type RootStackParamList = {
   Otp: { phoneNumber: string };
   Home: undefined;
   CreateFolder: undefined;
+  FolderDetails: {folder_id:string};
 };
 
 const Tab = createBottomTabNavigator();
@@ -35,6 +37,7 @@ function HomeTabs() {
           <Stack.Screen name="Otp" component={OtpScreen} options={{headerShown:false}} />
           <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
           <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
+          <Stack.Screen name="FolderDetails" component={FolderScreen} options={{headerShown:false}} />
         </Stack.Navigator>
   );
 }

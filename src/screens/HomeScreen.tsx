@@ -58,7 +58,7 @@ const HomeScreen = ({ navigation }: any) => {
             <View style={{height:150}}>
                 <Text>{jwtToken}</Text>
             </View>
-            <FoldersList jwtToken={jwtToken}/>
+            <FoldersList navigation={navigation} jwtToken={jwtToken}/>
             <Button title="Create Folder" onPress={handlePress}/>
 
             <View style={{height:150}}>

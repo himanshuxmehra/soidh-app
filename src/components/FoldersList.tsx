@@ -1,15 +1,17 @@
-import { SafeAreaView, StyleSheet, Text, View, Alert } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getFolders } from '../services/api'
-import { Button } from 'react-native-elements'
+import {useNavigation} from '@react-navigation/native';
 
 
 interface FoldersListProps {
   jwtToken: string
+  navigation: any
 }
 
-const FoldersList: React.FC<FoldersListProps> = ({ jwtToken }) => {
+const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken }) => {
   const [folders, setFolders] = useState([]);
+  
   console.log(jwtToken)
   const token = jwtToken;
   const accountId = '1'
@@ -21,7 +23,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ jwtToken }) => {
         // Handle the response as needed
         if (response.success) {
           setFolders(response.data.folders);
-          console.log("Folders got in response",folders)
+          console.log("Folders got in response", folders)
         } else {
           Alert.alert('Error', response.message || 'An error occurred while fetching folders.');
         }
@@ -33,20 +35,31 @@ const FoldersList: React.FC<FoldersListProps> = ({ jwtToken }) => {
     fetchFolder();
   }, [])
 
-  
   return (
     <View>
-      <Text style={[styles.darkText]}>{token}</Text>
+      {/* <Text style={[styles.darkText]}>{token}</Text> */}
 
       <Text style={[styles.darkText]}>FoldersList</Text>
-      {folders ? folders.map((folder:any) => { return <Text key={folder.id} style={[styles.darkText]}>{folder.id} - {folder.folder_name}</Text> }) : <Text style={[styles.darkText]}>no folders</Text>}
+      {folders ? folders.map((folder: any) => {
+        return <TouchableOpacity onPress={()=>{
+          navigation.push('FolderDetails', {
+            folder_id: folder.folder_id,
+            jwtToken: jwtToken
+          })
+        }}>
+          <Text key={folder.id} style={[styles.darkText]}>
+            {folder.id} - {folder.folder_name}</Text>
+        </TouchableOpacity>
+      }) : <Text style={[styles.darkText]}>
+        no folders
+      </Text>}
 
       <View style={
         {
-          marginVertical:10,
+          marginVertical: 10,
           borderTopColor: '#00FFFF',
           borderWidth: 10,
-          height:0
+          height: 0
         }
       }>
       </View>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, Text, useColorScheme, StatusBar, Platform, StyleSheet, Switch } from 'react-native';
 
-import axios from 'axios';
 import { createFolder } from '../services/api';
 import { useAuthentication } from '../services/AuthenticationContext';
 
@@ -26,7 +25,7 @@ const CreateFolder: React.FC = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const  handleSubmit = async () => {
     try {
 
       // Make a POST request with form data

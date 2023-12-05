@@ -82,7 +82,7 @@ export const verifyOtp = async (
     console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error('Error in generateOtp call:', error);
+    console.error('Error in verifyOtp call:', error);
     throw error;
   }
 };
@@ -95,11 +95,11 @@ export const getFolders = async (
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-folders', { accountId } , {headers});
-    console.log("sfesdfsdfseiuheq38952y4938y239423========",response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-folders', { accountId }, { headers });
+    console.log("sfesdfsdfseiuheq38952y4938y239423========", response.data)
     return response.data;
   } catch (error) {
-    console.error('Error in generateOtp call:', error);
+    console.error('Error in getFolders call:', error);
     throw error;
   }
 };
@@ -112,11 +112,30 @@ export const createFolder = async (
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/create-folder', { accountId, folderName, privacy } , {headers});
-    console.log("sfesdfsdfseiuheq38952y4938y239423========",response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post('/create-folder', { accountId, folderName, privacy }, { headers });
+    console.log("sfesdfsdfseiuheq38952y4938y239423========", response.data)
     return response.data;
   } catch (error) {
-    console.error('Error in generateOtp call:', error);
+    console.error('Error in uploadMedia call:', error);
+    throw error;
+  }
+};
+
+export const uploadMedia = async (
+  data:FormData, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'multipart/form-data', // Adjust the content type based on your API requirements
+    };
+    console.log("reponse-data: ", data)
+    
+    const response: AxiosResponse<ApiResponse> = await api.post('/upload-media', data, { headers });
+    console.log("reponse-data: ", response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in uploadMedia call:', error.message);
     throw error;
   }
 };
