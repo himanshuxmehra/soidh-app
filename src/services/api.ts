@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-const BASE_URL = 'http://10.0.2.2:3333'; // API URL
+export const BASE_URL = 'http://10.0.2.2:3333'; // API URL
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -113,7 +113,7 @@ export const createFolder = async (
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
     const response: AxiosResponse<ApiResponse> = await api.post('/create-folder', { accountId, folderName, privacy }, { headers });
-    console.log("sfesdfsdfseiuheq38952y4938y239423========", response.data)
+    console.log("createFolder Response=", response.data)
     return response.data;
   } catch (error) {
     console.error('Error in uploadMedia call:', error);
@@ -135,7 +135,41 @@ export const uploadMedia = async (
     console.log("reponse-data: ", response.data)
     return response.data;
   } catch (error) {
-    console.error('Error in uploadMedia call:', error.message);
+    console.error('Error in uploadMedia call:', error);
+    throw error;
+  }
+};
+
+export const getMedia = async (
+  accountId: string, folderId: string, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-media', { accountId, folderId }, { headers });
+    console.log("getMedia reponse=", response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in getMedia call:', error);
+    throw error;
+  }
+};
+
+export const getFolderDetails = async (
+  accountId: string, folderId: string, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-folder-details', { accountId, folderId }, { headers });
+    console.log("getFolderDetails reponse=", response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in getFolderDetails call:', error);
     throw error;
   }
 };
