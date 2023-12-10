@@ -29,6 +29,8 @@ export type RootStackParamList = {
 
 const Tab = createBottomTabNavigator();
 
+const Stack = createStackNavigator<RootStackParamList>();
+
 function HomeTabs() {
   return (
     <Stack.Navigator initialRouteName="Splash">
@@ -42,7 +44,6 @@ function HomeTabs() {
   );
 }
 
-const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC  = () => {
   return (

@@ -56,6 +56,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
       if (response.success) {
         if (!isLoggedIn) {
           const jwtToken = response.data.token;
+          const accountId = String(response.data.accountId);
 
           // Generating Random Usernames 
           // ToDo: this can move after otp is entered
@@ -68,7 +69,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           console.log("success", rotp)
           const shortName: string = uniqueNamesGenerator(customConfig);
           
-          logIn(shortName, phoneNumber, jwtToken);
+          logIn(shortName, phoneNumber, jwtToken, accountId);
           navigation.replace('Home');
         }
       } else {

@@ -122,7 +122,7 @@ export const createFolder = async (
 };
 
 export const uploadMedia = async (
-  data:FormData, jwtToken: string
+  data: FormData, jwtToken: string
 ): Promise<ApiResponse> => {
   try {
     const headers = {
@@ -130,7 +130,7 @@ export const uploadMedia = async (
       'Content-Type': 'multipart/form-data', // Adjust the content type based on your API requirements
     };
     console.log("reponse-data: ", data)
-    
+
     const response: AxiosResponse<ApiResponse> = await api.post('/upload-media', data, { headers });
     console.log("reponse-data: ", response.data)
     return response.data;
@@ -170,6 +170,40 @@ export const getFolderDetails = async (
     return response.data;
   } catch (error) {
     console.error('Error in getFolderDetails call:', error);
+    throw error;
+  }
+};
+
+export const shareFolder = async (
+  phoneNumber: number, folderId: string, canEdit: boolean, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/share-folder', { phoneNumber, folderId, canEdit }, { headers });
+    console.log("shareFolder reponse=", response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in shareFolder call:', error);
+    throw error;
+  }
+};
+
+export const getSharedFolders = async (
+  phone_number: number, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-shared-folders', { phone_number }, { headers });
+    console.log("getSharedFolders reponse=", response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in getSharedFolders call:', error);
     throw error;
   }
 };

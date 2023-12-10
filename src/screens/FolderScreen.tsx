@@ -20,7 +20,7 @@ interface FolderScreenProps {
 }
 
 const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
-    const { folder_id, jwtToken } = route.params;
+    const { folder_id, jwtToken, canEdit } = route.params;
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
     const [mediaFiles, setMediaFiles] = useState<string[]>([]);
     const [folderDetails, setFolderDetails] = useState({
@@ -101,15 +101,20 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 <Text style={styles.folderId}>{folderDetails.folder_id}</Text>
                 <Text style={styles.privacy}>{folderDetails.privacy ? <Text>Private</Text> : <Text>Public</Text>}</Text>
             </View>
-            <AddUsers/>
-            <MediaPicker onMediaSelected={handleMediaSelected} />
+            {canEdit ?
+                <View>
+                    <AddUsers jwtToken={jwtToken} folder_id={folder_id} />
+                    <MediaPicker onMediaSelected={handleMediaSelected} />
+                </View>
+                : <>
+                </>}
             <FlatList
                 style={styles.gallery}
                 data={mediaFiles}
                 horizontal={false}
                 numColumns={3}
                 renderItem={loadMedia}
-                contentContainerStyle={{paddingBottom:100}} 
+                contentContainerStyle={{ paddingBottom: 100 }}
             />
         </>
     )

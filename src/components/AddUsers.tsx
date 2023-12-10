@@ -1,8 +1,14 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import EnterPhoneNumberModal from './EnterPhoneNumberModal';
+import { shareFolder } from '../services/api';
 
-const AddUsers = () => {
+interface AddUsersProps {
+    jwtToken: string
+    folder_id: string
+  }
+
+const AddUsers: React.FC<AddUsersProps> = ({ folder_id, jwtToken }) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const handleOpenModal = () => {
@@ -13,8 +19,17 @@ const AddUsers = () => {
         setModalOpen(false);
     };
 
-    const handleSubmitForm = (formData: FormData) => {
+    const handleSubmitForm = async (formData: {phone:number, permission:boolean}) => {
         // Replace this with your API call logic
+        const phoneNumber = formData.phone;
+        const canEdit = formData.permission;
+
+        const response = await shareFolder(phoneNumber, folder_id, canEdit, jwtToken);
+            if (response.success) {
+                console.log("got in response", response.data)
+            } else {
+                Alert.alert('Error', response.message || 'An error occurred while sharing folder.');
+            }
         console.log('Form Data Submitted:', formData);
     };
     return (
