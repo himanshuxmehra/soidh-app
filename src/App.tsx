@@ -18,7 +18,8 @@ export type RootStackParamList = {
   Welcome: undefined;
   Otp: { phoneNumber: string };
   Home: any;
-  CreateFolder: undefined;
+  HomeScreen: any,
+  CreateFolder: any;
   FolderDetails: { folder_id: string, canEdit: boolean, jwtToken: string };
 };
 
@@ -27,11 +28,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export function HomeTabs() {
   return (
-    <Stack.Navigator initialRouteName="Splash">
-          <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Otp" component={OtpScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
+    <Stack.Navigator initialRouteName="HomeScreen">
+          <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
           <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
           <Stack.Screen name="FolderDetails" component={FolderScreen} options={{headerShown:false}} />
         </Stack.Navigator>

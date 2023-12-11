@@ -55,7 +55,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
             return <TouchableOpacity style={styles.folderListTab} key={folder.id} onPress={() => {
               navigation.push('FolderDetails', {
                 folder_id: folder.folder_id,
-                canEdit: folder.canEdit,
+                canEdit: true,
                 jwtToken: jwtToken
               })
             }}>

@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }: any) => {
     }, []);
 
     return (
-        <ScrollView contentContainerStyle={{}} refreshControl={
+        <ScrollView showsVerticalScrollIndicator contentContainerStyle={{}} refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <View style={[
                 isDarkMode ? { backgroundColor: '#0e0f0f' } : { backgroundColor: '#FFF' },
@@ -112,6 +112,7 @@ const HomeScreen = ({ navigation }: any) => {
                         <Text style={{ color: '#FFF' }}>Logout</Text>
                     </View>
                 </TouchableOpacity>
+                <View style={{height:100}}></View>
             </View>
         </ScrollView>
     );
@@ -134,14 +135,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         margin: 4,
         color: '#590D22',
-        fontFamily: 'Poppins'
+        fontFamily: 'Poppins',
     },
     welcomeText: {
         fontSize: 20,
         paddingHorizontal: 10,
         margin: 4,
         color: '#A4133C',
-        fontFamily: 'Poppins-Bold'
+        fontFamily: 'Poppins-Bold',
+        fontStyle: 'italic',
+        marginBottom: 10,
+        marginTop: 10,
 
     },
     logoutButton: {

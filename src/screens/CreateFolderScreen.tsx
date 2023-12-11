@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, Text, useColorScheme, StatusBar, Platform, StyleSheet, Switch } from 'react-native';
+import { View, TextInput, Alert, Text, useColorScheme, StatusBar, Platform, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 
 import { createFolder } from '../services/api';
 import { useAuthentication } from '../services/AuthenticationContext';
+import ButtonElement from '../elements/Button';
 
 interface FormData {
   folderName: string;
   isPrivate: boolean;
 }
 
-const CreateFolder: React.FC = () => {
+const CreateFolder: React.FC = ({navigation}:any) => {
   const [formData, setFormData] = useState<FormData>({
     folderName: '',
     isPrivate: true, // Default is set to private
@@ -25,20 +26,21 @@ const CreateFolder: React.FC = () => {
     });
   };
 
-  const  handleSubmit = async () => {
+  const handleSubmit = async () => {
     try {
 
       // Make a POST request with form data
       const folderName = formData.folderName;
       const privacy = formData.isPrivate;
 
-      const response = await createFolder('1',jwtToken,folderName, privacy)
+      const response = await createFolder('1', jwtToken, folderName, privacy)
 
       // Handle the response as needed
       console.log('Response:', response.data);
 
       // Example: Display a success message
-      Alert.alert('Success', 'Form submitted successfully!');
+      navigation.replace('Home');
+      // Alert.alert('Success', 'Folder Created successfully!');
     } catch (error) {
       // Handle errors
       console.error('Error in form submission:', error);
@@ -54,23 +56,23 @@ const CreateFolder: React.FC = () => {
     <View style={[
       isDarkMode ? { backgroundColor: '#FFF' } : { backgroundColor: '#FFF' },
       {
-          flex: 1,
-          overflow: "hidden",
+        flex: 1,
+        overflow: "hidden",
       },
-  ]}>
+    ]}>
       <StatusBar
-          animated={true}
-          backgroundColor="#000"
-          barStyle={'light-content'}
-          hidden={false}
+        animated={true}
+        backgroundColor="#000"
+        barStyle={'light-content'}
+        hidden={false}
       />
       <Text
-          style={
-              [styles.headingText, styles.darkText, {
-                  paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 35, alignSelf: 'center'
-              }]
-          }>
-          SOIDH
+        style={
+          [styles.headingText, styles.darkText, {
+            paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 35, alignSelf: 'center'
+          }]
+        }>
+        SOIDH
       </Text>
       {/* Render form fields */}
       <TextInput
@@ -83,39 +85,41 @@ const CreateFolder: React.FC = () => {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={{ marginRight: 10 }}>Privacy:</Text>
         <Switch
-          value={formData.isPrivate}  
-          onValueChange={(value:boolean) => handleInputChange('isPrivate', value)}
+          value={formData.isPrivate}
+          onValueChange={(value: boolean) => handleInputChange('isPrivate', value)}
         />
         <Text>{formData.isPrivate ? 'Private' : 'Public'}</Text>
       </View>
 
       {/* Render submit button */}
-      <Button title="Submit Form" onPress={handleSubmit} />
+      <TouchableOpacity onPress={handleSubmit} >
+        <ButtonElement title='Create Folder' />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-      flex: 0,
-      alignItems: 'center',
+    flex: 0,
+    alignItems: 'center',
   },
   whiteText: {
-      color: '#FFFFFF',
+    color: '#FFFFFF',
   },
   darkText: {
-      color: '#000',
+    color: '#000',
   },
   headingText: {
-      fontSize: 26,
-      fontWeight: '200',
-      paddingHorizontal: 10,
-      margin: 4
+    fontSize: 26,
+    fontWeight: '200',
+    paddingHorizontal: 10,
+    margin: 4
   },
   welcomeText: {
-      fontSize: 14,
-      paddingHorizontal: 10,
-      margin: 4
+    fontSize: 14,
+    paddingHorizontal: 10,
+    margin: 4
   },
 });
 
