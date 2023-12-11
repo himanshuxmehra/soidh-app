@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, TextInput, Alert, StyleSheet, ActivityIndicator, ImageBackground, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 import { useAuthentication } from '../services/AuthenticationContext';
 import { checkPhoneNumber, generateOtp } from '../services/api';
+import ButtonElement from '../elements/Button';
+import { Text } from 'react-native-elements';
 
 type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
 type WelcomeScreenRouteProp = RouteProp<RootStackParamList, 'Welcome'>;
@@ -56,34 +58,60 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
 
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter mobile number"
-        keyboardType="numeric"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-      />
-      <Button title="Submit" onPress={handlePress} />
-      {loading && <ActivityIndicator style={styles.loader} />}
-    </View>
+    <ImageBackground
+      style={{ flex: 1, width: '100%' }}
+      source={require('../../assets/welcome-background.png')}
+      blurRadius={5}
+    >
+      <View style={styles.container}>
+        <Text style={styles.welcomeText}>
+          Welcome back, we missed you! 
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter mobile number"
+          placeholderTextColor='#A4133C'
+          keyboardType="numeric"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+        />
+        <TouchableOpacity onPress={handlePress}>
+          <ButtonElement title='Login'/>
+        </TouchableOpacity>
+        {loading && <ActivityIndicator style={styles.loader} />}
+      </View>
+
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  welcomeText:{
+    fontSize: 40,
+    textAlign: 'center',
+    fontWeight:'800',
+    margin:20,
+    backgroundColor:'#FFF',
+    color: '#590D22'
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding:10,
+    width:'100%'
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: '#A4133C',
     borderWidth: 1,
     marginBottom: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     width: '100%',
+    backgroundColor: '#FFF',
+    color: '#A4133C',
+    borderRadius: 10,
+    fontSize: 14
   },
   loader: {
     marginTop: 20,

@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native'
+import { SafeAreaView, ImageBackground, StyleSheet, Text, View, Alert, TouchableOpacity, FlatList, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getFolders, getSharedFolders } from '../services/api'
 import { useNavigation } from '@react-navigation/native';
@@ -19,67 +19,77 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
 
   useEffect(() => {
     const fetchFolder = async () => {
-        const response = await getFolders(accountId, token);
+      const response = await getFolders(accountId, token);
 
-        // Handle the response as needed
-        if (response.success) {
-          setFolders(response.data.folders);
-          console.log("Folders got in response", folders)
-        } else {
-          Alert.alert('Error', response.message || 'An error occurred while fetching folders.');
-        }
+      // Handle the response as needed
+      if (response.success) {
+        setFolders(response.data.folders);
+        console.log("Folders got in response", folders)
+      } else {
+        Alert.alert('Error', response.message || 'An error occurred while fetching folders.');
+      }
 
-        const response2 = await getSharedFolders(phoneNumber, token);
+      const response2 = await getSharedFolders(phoneNumber, token);
 
-        // Handle the response as needed
-        if (response2.success) {
-          setSharedFolders(response2.data.folders);
-          console.log("Folders got in response", folders)
-        } else {
-          Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
-        }
+      // Handle the response as needed
+      if (response2.success) {
+        setSharedFolders(response2.data.folders);
+        console.log("Folders got in response", folders)
+      } else {
+        Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
+      }
 
     };
     fetchFolder();
   }, [])
 
   return (
-    <View>
+    <View style={{
+    }}>
       {/* <Text style={[styles.darkText]}>{token}</Text> */}
+      <Text style={[styles.folderText]}>Your Folders:</Text>
       <View style={styles.folderList}>
-        <Text style={[styles.folderText]}>FoldersList</Text>
-        {folders ? folders.map((folder: any) => {
-          return <TouchableOpacity key={folder.id} onPress={() => {
-            navigation.push('FolderDetails', {
-              folder_id: folder.folder_id,
-              canEdit: true,
-              jwtToken: jwtToken
-            })
-          }}>
-            <View key={folder.id} style={styles.folderListTab}>
-              <Text style={[styles.folderListTabText]}>
-                {folder.id} - {folder.folder_name}</Text>
-            </View>
-          </TouchableOpacity>
-        }) : <Text style={[styles.darkText]}>
-          no folders
-        </Text>}
+
+        {folders ?
+          folders.map((folder: any) => {
+            return <TouchableOpacity style={styles.folderListTab} key={folder.id} onPress={() => {
+              navigation.push('FolderDetails', {
+                folder_id: folder.folder_id,
+                canEdit: folder.canEdit,
+                jwtToken: jwtToken
+              })
+            }}>
+              <ImageBackground
+                style={{ flex: 1, width: '100%' }}
+                source={require('../../assets/foldericon.png')}
+                blurRadius={0}>
+                <Text style={[styles.folderListTabText]}>
+                  {folder.folder_name}</Text>
+              </ImageBackground>
+            </TouchableOpacity>
+          }) : <Text style={[styles.darkText]}>
+            no folders
+          </Text>}
       </View>
+
+      <Text style={[styles.folderText]}>Shared with me</Text>
+
       <View style={styles.folderList}>
-        <Text style={[styles.folderText]}>Shared with me</Text>
         {sharedfolders ? sharedfolders.map((folder: any) => {
-          return <TouchableOpacity key={folder.id} onPress={() => {
+          return <TouchableOpacity style={styles.folderListTab} key={folder.id} onPress={() => {
             navigation.push('FolderDetails', {
               folder_id: folder.folder_id,
               canEdit: folder.canEdit,
               jwtToken: jwtToken
             })
           }}>
-            <View key={folder.id} style={styles.folderListTab}>
+            <ImageBackground
+              style={{ flex: 1, width: '100%' }}
+              source={require('../../assets/foldericon.png')}
+              blurRadius={0}>
               <Text style={[styles.folderListTabText]}>
-                {folder.id} - {folder.folder_id}</Text>
-            </View>
-
+                {folder.folder_name}</Text>
+            </ImageBackground>
           </TouchableOpacity>
         }) : <Text style={[styles.darkText]}>
           no folders
@@ -109,21 +119,28 @@ const styles = StyleSheet.create({
   folderList: {
     paddingHorizontal: 10,
     paddingVertical: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   folderText: {
     paddingLeft: 20,
     fontSize: 18,
-    color: '#C9184A'
+    fontFamily: 'Poppins-Bold',
+    color: '#C9184A',
   },
   folderListTab: {
     marginTop: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    padding: 10,
     backgroundColor: '#FFCCD5',
     borderRadius: 15,
+    marginHorizontal: 5,
+    width: '30%',
   },
   folderListTabText: {
     color: '#A4133C',
+    padding: 10,
     fontWeight: '600',
+    paddingVertical: 30
   },
 })

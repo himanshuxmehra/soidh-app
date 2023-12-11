@@ -17,93 +17,69 @@ const NavigationIcon = ({route, isFocused}: NavigationIconProps) => {
       case 'home':
         return isFocues ? (
           <Image
-          style={{
-            width:35,
-            height:35,
-          }}
-          source={{
-            uri:'https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Photos-512.png'
-          }}/>
+          width={width}
+            height={height}
+          source={require('../../assets/gallery.png')}/>
         ) : (
           <Image
-          style={{
-            width:35,
-            height:35,
-          }}
-          source={{
-            uri:'https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Photos-512.png'
-          }}/>
+          width={width}
+            height={height}
+          source={require('../../assets/gallery.png')}/>
         );
       case 'folder':
         return isFocues ? (
-          <Icon
-            name="folder"
-            style={{
-              fontSize: 30,
-            }}
-            color="#fff"
+          <Image
+            source={require('../../assets/createfolder.png')}
+            width={width}
+            height={height}
           />
         ) : (
-          <Icon
-            name="folder"
-            style={{
-              fontSize: 30,
-            }}
-            color="#6b4eff"
+          <Image
+            source={require('../../assets/createfolder.png')}
+            width={width}
+            height={height}
           />
         );
       case 'camera':
         return isFocues ? (
-          <Icon
-            name="camera-retro"
-            style={{
-              fontSize: 30,
-            }}
-            color="#fff"
+          <Image
+            source={require('../../assets/camera-lens.png')}
+            width={width}
+            height={height}
           />
         ) : (
-          <Icon
-            name="camera-retro"
-            style={{
-              fontSize: 30,
-            }}
-            color="#6b4eff"
+          <Image
+            source={require('../../assets/camera-lens.png')}
+            width={width}
+            height={height}
           />
         );
       case 'notes':
         return isFocues ? (
-          <Icon
-            name="clipboard"
-            style={{
-              fontSize: 30,
-            }}
-            color="#fff"
-          />
+          <Image
+          source={require('../../assets/createfolder.png')}
+          width={width}
+          height={height}
+        />
         ) : (
-          <Icon
-            name="clipboard"
-            style={{
-              fontSize: 30,
-            }}
-            color="#6b4eff"
+          <Image
+            source={require('../../assets/createfolder.png')}
+            width={width}
+            height={height}
           />
         );
       case 'account':
         return isFocues ? (
-          <Icon
-            name="user"
-            style={{
-              fontSize: 30,
-            }}
-            color="#fff"
-          />
+          <Image
+          source={require('../../assets/settingsbold.png')}
+          width={width}
+          height={height}
+        />
         ) : (
-          <Icon
-            name="user"
-            style={{
-              fontSize: 30,
-            }}
-            color="#6b4eff"
+          <Image
+            source={require('../../assets/settings.png')}
+            width={width}
+            height={height}
           />
         );
       default:

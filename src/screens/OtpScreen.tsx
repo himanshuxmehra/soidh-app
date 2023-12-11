@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Alert } from 'react-native';
+import { View, TextInput, Button, Alert, ImageBackground, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { useAuthentication } from '../services/AuthenticationContext';
 
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
 import { generateOtp, verifyOtp } from '../services/api';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import ButtonElement from '../elements/Button';
+import { Text } from 'react-native-elements';
 
 type OtpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Otp'>;
 type OtpScreenRouteProp = RouteProp<RootStackParamList, 'Otp'>;
@@ -72,7 +75,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           };
           console.log("success", rotp)
           const shortName: string = uniqueNamesGenerator(customConfig);
-          
+
           logIn(shortName, phoneNumber, jwtToken, accountId);
           navigation.replace('Home');
         }
@@ -84,11 +87,58 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
 
 
   return (
-    <View>
-      <TextInput placeholder="Enter OTP" keyboardType="numeric" value={otp} onChangeText={setOtp} />
-      <Button title="Submit" onPress={handlePress} />
-    </View>
+    <ImageBackground
+      style={{ flex: 1, width: '100%' }}
+      source={require('../../assets/welcome-background.png')}
+      blurRadius={5}
+    >
+      <View style={styles.container}>
+      <Text style={styles.welcomeText}>
+          One Step Away! 
+        </Text>
+        <TextInput
+          placeholder="Enter OTP"
+          placeholderTextColor='#A4133C'
+          style={styles.input}
+          keyboardType="numeric" 
+          value={otp} 
+          onChangeText={setOtp} />
+        <TouchableOpacity onPress={handlePress}>
+          <ButtonElement title='Submit'/>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
 export default OtpScreen;
+
+const styles = StyleSheet.create({
+  welcomeText: {
+    fontSize: 40,
+    textAlign: 'center',
+    fontWeight: '800',
+    margin: 20,
+    backgroundColor: '#FFF',
+    color: '#590D22'
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    width: '100%'
+  },
+  input: {
+    height: 50,
+    borderColor: '#A4133C',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 20,
+    width: '100%',
+    backgroundColor: '#FFF',
+    color: '#A4133C',
+    borderRadius: 10,
+    fontSize: 14
+  },
+})
