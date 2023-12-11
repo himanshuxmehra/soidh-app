@@ -19,7 +19,6 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
 
   useEffect(() => {
     const fetchFolder = async () => {
-      try {
         const response = await getFolders(accountId, token);
 
         // Handle the response as needed
@@ -37,13 +36,9 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
           setSharedFolders(response2.data.folders);
           console.log("Folders got in response", folders)
         } else {
-          Alert.alert('Error', response2.message || 'An error occurred while fetching folders.');
+          Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
         }
 
-      } catch (error) {
-        console.error('Error in get-folders call:', error);
-        Alert.alert('Error', 'An error occurred while fetching folders.');
-      }
     };
     fetchFolder();
   }, [])
@@ -54,15 +49,15 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
       <View style={styles.folderList}>
         <Text style={[styles.folderText]}>FoldersList</Text>
         {folders ? folders.map((folder: any) => {
-          return <TouchableOpacity onPress={() => {
+          return <TouchableOpacity key={folder.id} onPress={() => {
             navigation.push('FolderDetails', {
               folder_id: folder.folder_id,
               canEdit: true,
               jwtToken: jwtToken
             })
           }}>
-            <View style={styles.folderListTab}>
-              <Text key={folder.id} style={[styles.folderListTabText]}>
+            <View key={folder.id} style={styles.folderListTab}>
+              <Text style={[styles.folderListTabText]}>
                 {folder.id} - {folder.folder_name}</Text>
             </View>
           </TouchableOpacity>
@@ -73,15 +68,15 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
       <View style={styles.folderList}>
         <Text style={[styles.folderText]}>Shared with me</Text>
         {sharedfolders ? sharedfolders.map((folder: any) => {
-          return <TouchableOpacity onPress={() => {
+          return <TouchableOpacity key={folder.id} onPress={() => {
             navigation.push('FolderDetails', {
               folder_id: folder.folder_id,
               canEdit: folder.canEdit,
               jwtToken: jwtToken
             })
           }}>
-            <View style={styles.folderListTab}>
-              <Text key={folder.id} style={[styles.folderListTabText]}>
+            <View key={folder.id} style={styles.folderListTab}>
+              <Text style={[styles.folderListTabText]}>
                 {folder.id} - {folder.folder_id}</Text>
             </View>
 

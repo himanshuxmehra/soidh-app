@@ -43,7 +43,11 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
     };
 
     fetchOtp(); // Call the function when the component mounts
-
+    if (isLoggedIn) {
+      // User is already logged in, navigate to Home screen
+      navigation.replace('Home');
+      // return null; // Render nothing if navigating away
+    }
   }, []); // Include phoneNumber as a dependency
 
   const handlePress = async () => {
@@ -78,11 +82,6 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
     }
   };
 
-  if (isLoggedIn) {
-    // User is already logged in, navigate to Home screen
-    navigation.replace('Home');
-    return null; // Render nothing if navigating away
-  }
 
   return (
     <View>

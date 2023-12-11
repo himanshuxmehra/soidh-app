@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -17,8 +17,15 @@ interface WelcomeScreenProps {
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   const { isLoggedIn, jwtToken } = useAuthentication();
   const [phoneNumber, setPhoneNumber] = useState('');
-
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // User is already logged in, navigate to Home screen
+      navigation.replace('Home');
+      // return null; // Render nothing if navigating away
+    }
+  }, [])
 
   const handlePress = async () => {
     try {
@@ -31,7 +38,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         // Check if the component is still mounted before updating state
         if (response.success) {
           setLoading(false);
-          console.log("sdafahbfaehbe")
           // Handle the response
           navigation.navigate('Otp', { phoneNumber });
         }
@@ -46,12 +52,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
     }
   };
 
-
-  if (isLoggedIn) {
-    // User is already logged in, navigate to Home screen
-    navigation.replace('Home');
-    return null; // Render nothing if navigating away
-  }
 
 
 

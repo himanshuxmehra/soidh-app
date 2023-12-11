@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -14,11 +14,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const HomeScreen = ({ navigation }: any) => {
     const { isLoggedIn, logOut, username, jwtToken, phoneNumber, accountId }: any = useAuthentication();
-    if (!isLoggedIn) {
-        // User is already logged in, navigate to Home screen
-        navigation.replace('Welcome');
-        return null; // Render nothing if navigating away
-    }
+    
+    useEffect(()=>{
+        if (!isLoggedIn) {
+            // User is already logged in, navigate to Home screen
+            navigation.replace('Welcome');
+            // return null; // Render nothing if navigating away
+        }
+    })
+    
+    
     const handleLogout = () => {
         // Implement logout logic
         logOut();
