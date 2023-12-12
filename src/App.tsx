@@ -12,6 +12,7 @@ import FolderScreen from './screens/FolderScreen';
 
 import { AuthenticationProvider } from './services/AuthenticationContext';
 import PostLogin from './screens/PostLogin';
+import ImageScreen from './screens/ImageScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   HomeScreen: any,
   CreateFolder: any;
   FolderDetails: { folder_id: string, canEdit: boolean, jwtToken: string };
+  ImageScreen: {imageUrl: string}
 };
 
 
@@ -32,6 +34,7 @@ export function HomeTabs() {
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
           <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
           <Stack.Screen name="FolderDetails" component={FolderScreen} options={{headerShown:false}} />
+          <Stack.Screen name="ImageScreen" component={ImageScreen} options={{headerShown:false}} />
         </Stack.Navigator>
   );
 }

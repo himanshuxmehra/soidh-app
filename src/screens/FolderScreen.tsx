@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ScrollView, Image, Alert, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { Text, View, TouchableOpacity, ScrollView, Image, Alert, StyleSheet, TouchableWithoutFeedback, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { uploadMedia, getMedia, BASE_URL, getFolderDetails } from '../services/a
 import v4 from 'react-native-uuid';
 import { FlatList } from 'react-native-gesture-handler';
 import AddUsers from '../components/AddUsers';
+import { useAuthentication } from '../services/AuthenticationContext';
 
 type FolderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type FolderScreenRouteProp = RouteProp<RootStackParamList, 'FolderDetails'>;
@@ -28,6 +29,10 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
         folder_id: 'Folder Id',
         privacy: true
     });
+    const [loading, setLoading] = useState(false);
+    const { accountId }: any = useAuthentication();
+
+
 
     useEffect(() => {
         async function fetchMedia(folder_id: string, accountId: string) {
@@ -39,7 +44,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 Alert.alert('Error', response.message || 'An error occurred while fetching meida.');
             }
 
-            const responseFolder = await getFolderDetails(accountId, folder_id, jwtToken);
+            const responseFolder = await getFolderDetails(folder_id, jwtToken);
             if (responseFolder.success) {
                 setFolderDetails(responseFolder.data.folder[0]);
                 console.log("folder details got in response", responseFolder)
@@ -47,19 +52,21 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 Alert.alert('Error', responseFolder.message || 'An error occurred while fetching meida.');
             }
         }
-        fetchMedia(folder_id, '1');
+        fetchMedia(folder_id, accountId);
     }, []);
 
-    const handleMediaSelected = async (selectedMedia: string[]) => {
+    const handleMediaSelected = async (selectedMedia: string[]):Promise<boolean> => {
         // Do something with the selected media (e.g., save to state, upload to server, etc.)
         setSelectedImages(selectedMedia);
         for (var i = 0; i < selectedImages.length; i++) {
             const image = selectedImages[i];
-            console.log('1', jwtToken, folder_id, image)
+            console.log(accountId, jwtToken, folder_id, image)
+            setLoading(true);
+
             // Generate a UUID for the folder
             const imageId = v4.v4();
             const data = new FormData();
-            data.append("accountId", '1')
+            data.append("accountId", accountId)
             data.append("folderId", folder_id)
             data.append("imageId", imageId)
             const newImageUri = "file:///" + image.uri.split("file:/").join("");
@@ -70,23 +77,28 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
             });
             const response = await uploadMedia(data, jwtToken);
             if (response.success) {
+
+                setLoading(false);
+
                 console.log('reponse data', response.data.media)
                 const res = [...mediaFiles, ...response.data.media]
                 setMediaFiles(res);
                 console.log('media files:: ', mediaFiles);
+                return true;
             }
         }
         console.log('Selected Media:', selectedMedia);
+        setLoading(false);
+        return true;
     };
 
     const loadMedia = (media: any) => {
 
         media = media.item
         return <TouchableOpacity onPress={() => {
-            //   navigation.push('FolderDetails', {
-            //     folder_id: folder.folder_id,
-            //     jwtToken: jwtToken
-            //   })
+              navigation.push('ImageScreen', {
+                imageUrl: `${BASE_URL}/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png`
+              })
         }}>
             <Text key={media.id} style={[styles.darkText]}>
                 {media.id}</Text>
@@ -108,6 +120,8 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 </View>
                 : <>
                 </>}
+            {loading && <ActivityIndicator style={styles.loader} />}
+
             <FlatList
                 style={styles.gallery}
                 data={mediaFiles}
@@ -116,6 +130,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 renderItem={loadMedia}
                 contentContainerStyle={{ paddingBottom: 100 }}
             />
+
         </>
     )
 }
@@ -155,5 +170,8 @@ const styles = StyleSheet.create({
     gallery: {
         alignSelf: 'center',
         paddingBottom: 15
-    }
+    },
+    loader: {
+        marginTop: 20,
+    },
 })

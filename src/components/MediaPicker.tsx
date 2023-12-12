@@ -53,7 +53,6 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
     // Pass the selected media to the parent component
     if (selectedMedia.length != 0) {
       onMediaSelected(selectedMedia);
-      setDisplaySelectedMedia([]);
     } else {
       Alert.alert('Error', 'Please select atleast 1 media');
     }

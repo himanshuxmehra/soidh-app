@@ -15,9 +15,7 @@ const CreateFolder: React.FC = ({navigation}:any) => {
     folderName: '',
     isPrivate: true, // Default is set to private
   });
-  const { jwtToken }: any = useAuthentication();
-
-
+  const { jwtToken, accountId }: any = useAuthentication();
 
   const handleInputChange = (field: keyof FormData, value: any) => {
     setFormData({
@@ -33,7 +31,7 @@ const CreateFolder: React.FC = ({navigation}:any) => {
       const folderName = formData.folderName;
       const privacy = formData.isPrivate;
 
-      const response = await createFolder('1', jwtToken, folderName, privacy)
+      const response = await createFolder(accountId, jwtToken, folderName, privacy)
 
       // Handle the response as needed
       console.log('Response:', response.data);

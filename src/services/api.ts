@@ -158,14 +158,14 @@ export const getMedia = async (
 };
 
 export const getFolderDetails = async (
-  accountId: string, folderId: string, jwtToken: string
+ folderId: string, jwtToken: string
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-folder-details', { accountId, folderId }, { headers });
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-folder-details', { folderId }, { headers });
     console.log("getFolderDetails reponse=", response.data)
     return response.data;
   } catch (error) {
