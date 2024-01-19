@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import NavigationIcon from './NavigationIcon';
+import { COLORS } from '../constants/theme';
 
 // import { SelectWheel } from '.';
 
@@ -75,10 +76,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 25,
-    backgroundColor: '#590D22',
-    borderRadius: 25,
-    marginHorizontal: width * 0.1,
+    bottom: 0,
+    backgroundColor: COLORS.secondary,
+    // borderRadius: 25,
+    // marginHorizontal: width * 0.1,
   },
   mainItemContainer: {
     flex: 1,

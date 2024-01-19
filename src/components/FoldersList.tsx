@@ -2,6 +2,7 @@ import { SafeAreaView, ImageBackground, StyleSheet, Text, View, Alert, Touchable
 import React, { useEffect, useState } from 'react'
 import { BASE_URL, getFolders, getMedia, getSharedFolders } from '../services/api'
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '../constants/theme';
 
 
 interface FoldersListProps {
@@ -40,28 +41,28 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
         Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
       }
 
-      
+
 
     };
     fetchFolder();
   }, [])
 
-  const loadThumbnail = async (folder_id:string) => {    
+  const loadThumbnail = async (folder_id: string) => {
     const response3 = await getMedia(accountId, folder_id, jwtToken);
-            if (response3.success) {
-                setMediaThumbnail(response3.data.media[0]);
-                console.log("media got in response", mediaFiles)
-                return response3.data.media;
-            } else {
-                Alert.alert('Error', response3.message || 'An error occurred while fetching meida.');
-            }
+    if (response3.success) {
+      setMediaThumbnail(response3.data.media[0]);
+      console.log("media got in response", mediaFiles)
+      return response3.data.media;
+    } else {
+      Alert.alert('Error', response3.message || 'An error occurred while fetching meida.');
+    }
   }
 
   const loadMedia = (folder: any) => {
 
     folder = folder.item
-    const media=loadThumbnail(folder.folderId);
-    console.log('thumbnail::::',media)
+    const media = loadThumbnail(folder.folderId);
+    console.log('thumbnail::::', media)
     return <TouchableOpacity style={[styles.folderListTab]} key={folder.id} onPress={() => {
       navigation.push('FolderDetails', {
         folder_id: folder.folder_id,
@@ -92,7 +93,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
             data={folders}
             horizontal={true}
             renderItem={loadMedia}
-            // contentContainerStyle={{ paddingBottom: 100 }}
+          // contentContainerStyle={{ paddingBottom: 100 }}
           />
           : <Text style={[styles.darkText]}>
             no folders
@@ -119,15 +120,13 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
             </ImageBackground>
           </TouchableOpacity>
         }) : <Text style={[styles.darkText]}>
-          no folders
+          No Folders
         </Text>}
 
 
 
       </View>
-
-
-      <View style={
+{/*   <View style={
         {
           marginVertical: 10,
           borderTopColor: '#00FFFF',
@@ -135,7 +134,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
           height: 0
         }
       }>
-      </View>
+      </View> */}
     </View>
   )
 }
@@ -157,23 +156,22 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     fontSize: 18,
     fontFamily: 'Poppins-Bold',
-    color: '#C9184A',
+    color: COLORS.primary,
   },
   folderListTab: {
-    marginTop: 5,
     padding: 5,
-    backgroundColor: '#FFCCD5',
+    backgroundColor: COLORS.lightBg,
     borderRadius: 15,
     marginHorizontal: 2,
-    width:100,
-    height: 200,
+    width: 100,
+    height: 128,
+    borderRightWidth: 1,
   },
   folderListTabText: {
-    color: '#A4133C',
+    color: COLORS.primary,
     padding: 10,
-    fontWeight: '600',
     paddingVertical: 30,
-    fontSize: 12,
-    fontFamily: 'Poppins-Regular',
+    fontSize: 18,
+    fontFamily: 'Poppins-Light',
   },
 })

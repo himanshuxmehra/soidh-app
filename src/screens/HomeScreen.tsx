@@ -7,7 +7,6 @@ import {
     StyleSheet,
     ScrollView,
     RefreshControl,
-    Image
 } from 'react-native';
 import { useAuthentication } from '../services/AuthenticationContext';
 import FoldersList from '../components/FoldersList';
@@ -15,6 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import SearchBar from '../components/SearchBar';
 import { COLORS } from '../constants/theme';
 import Header from '../components/Header';
+import Stories from '../components/Stories';
 
 const HomeScreen = ({ navigation }: any) => {
     const { isLoggedIn, logOut, username, jwtToken, phoneNumber, accountId }: any = useAuthentication();
@@ -65,6 +65,7 @@ const HomeScreen = ({ navigation }: any) => {
                     hidden={false}
                 />
                 <Header/>
+                <Stories/>
                 {/* <Text style={
                     [styles.welcomeText, styles.darkText]}>
                     Welcome, {username}
@@ -74,8 +75,7 @@ const HomeScreen = ({ navigation }: any) => {
                     <Text style={{ color: '#A4133C' }}>{phoneNumber}</Text>
                 </View> */}
                 <FoldersList navigation={navigation} jwtToken={jwtToken} phoneNumber={phoneNumber} accountId={accountId} />
-                <View style={{ height: 30 }}>
-                </View>
+                
 
                 <TouchableOpacity onPress={handlePress}>
                     <View style={styles.logoutButton}>
@@ -85,7 +85,7 @@ const HomeScreen = ({ navigation }: any) => {
                 <View style={{ height: 30 }}>
 
                 </View>
-
+                
                 <TouchableOpacity onPress={handleLogout}>
                     <View style={styles.logoutButton}>
                         <Text style={{ color: '#FFF' }}>Logout</Text>

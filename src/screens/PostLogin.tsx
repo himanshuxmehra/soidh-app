@@ -16,6 +16,7 @@ const PostLogin = () => {
       <Tab.Screen name="home" component={HomeTabs} options={{ headerShown: false }} />
       <Tab.Screen name="folder" component={CreateFolder} options={{ headerShown: false }} />
       <Tab.Screen name="camera" component={Notes} options={{ headerShown: false }} />
+      <Tab.Screen name="gallery" component={Account} options={{ headerShown: false }} />
       <Tab.Screen name="account" component={Account} options={{ headerShown: false }} />
     </Tab.Navigator>
   )

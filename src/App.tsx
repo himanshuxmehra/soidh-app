@@ -23,20 +23,55 @@ export type RootStackParamList = {
   HomeScreen: any,
   CreateFolder: any;
   FolderDetails: { folder_id: string, canEdit: boolean, jwtToken: string };
-  ImageScreen: {imageUrl: string}
+  ImageScreen: { imageUrl: string }
 };
 
 
 const Stack = createStackNavigator<RootStackParamList>();
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 
 export function HomeTabs() {
   return (
     <Stack.Navigator initialRouteName="HomeScreen">
-          <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
-          <Stack.Screen name="FolderDetails" component={FolderScreen} options={{headerShown:false}} />
-          <Stack.Screen name="ImageScreen" component={ImageScreen} options={{headerShown:false}} />
-        </Stack.Navigator>
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{
+        transitionSpec: {
+          open: config,
+          close: config,
+        }, gestureDirection: 'horizontal-inverted', 
+        headerShown: false
+      }} />
+      <Stack.Screen name="CreateFolder" component={CreateFolder} options={{
+        transitionSpec: {
+          open: config,
+          close: config,
+        }, gestureDirection: 'horizontal-inverted', 
+        headerShown: false
+      }} />
+      <Stack.Screen name="FolderDetails" component={FolderScreen} options={{
+        transitionSpec: {
+          open: config,
+          close: config,
+        }, gestureDirection: 'horizontal-inverted', 
+        headerShown: false
+      }} />
+      <Stack.Screen name="ImageScreen" component={ImageScreen} options={{
+        transitionSpec: {
+          open: config,
+          close: config,
+        }, gestureDirection: 'horizontal-inverted', 
+        headerShown: false
+      }} />
+    </Stack.Navigator>
   );
 }
 
@@ -52,7 +87,7 @@ const App: React.FC = () => {
           <Stack.Screen name="Home" component={PostLogin} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
-      <Toast/>
+      <Toast />
     </AuthenticationProvider>
   );
 };

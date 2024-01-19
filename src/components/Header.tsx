@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Image } from 'react-native-elements'
 import { COLORS } from '../constants/theme'
@@ -8,21 +8,17 @@ const Header = () => {
         <View style={styles.header}>
             <Image
                 source={require('../../assets/soidh-clear.png')}
-                width={64}
-                height={64}
+                style={styles.logo}
             />
-
-            <Text
+            {/* <Text
                 style={
                     [styles.textLogo]
                 }>
                 SOIDH
-            </Text>
-            <Image
+            </Text> */}
+            {/* <Image
                 source={require('../../assets/menu.png')}
-                width={32}
-                height={32}
-            />
+            /> */}
 
         </View >
     )
@@ -35,12 +31,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingTop: 25,
-        paddingBottom: 25,
+        paddingTop: 5,
+        paddingBottom: 0,
         paddingHorizontal: 10,
         backgroundColor: COLORS.secondary,
     },
     textLogo: {
         color: COLORS.white,
     },
+    logo:{
+        width:96,
+        height:96,
+    }
 })
