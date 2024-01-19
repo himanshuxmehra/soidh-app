@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Alert, StyleSheet, ActivityIndicator, ImageBackground, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  StatusBar,
+  Dimensions
+} from 'react-native';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 import { useAuthentication } from '../services/AuthenticationContext';
-import { checkPhoneNumber, generateOtp } from '../services/api';
-import ButtonElement from '../elements/Button';
+import { checkPhoneNumber } from '../services/api';
 import { Text } from 'react-native-elements';
+import { COLORS, SIZES } from '../constants/theme';
 
 type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
 type WelcomeScreenRouteProp = RouteProp<RootStackParamList, 'Welcome'>;
@@ -54,52 +65,49 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
     }
   };
 
-
-
-
   return (
-    <ImageBackground
-      style={{ flex: 1, width: '100%' }}
-      source={require('../../assets/welcome-background.png')}
-      blurRadius={5}
-    >
-      <View style={styles.container}>
-        <Text style={styles.welcomeText}>
-          Welcome back, we missed you! 
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter mobile number"
-          placeholderTextColor='#A4133C'
-          keyboardType="numeric"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
-        <TouchableOpacity onPress={handlePress}>
-          <ButtonElement title='Login'/>
-        </TouchableOpacity>
-        {loading && <ActivityIndicator style={styles.loader} />}
+    <ScrollView>
+      <StatusBar backgroundColor={COLORS.secondary} />
+      <Image
+        style={[{ position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height, zIndex: -1 }]}
+        source={require('../../assets/welcome-bg-5.jpg')}
+        blurRadius={7}
+        resizeMode='cover'
+      />
+      <View style={styles.overlay}>
+        <View style={styles.topContainer}>
+          <Image source={require('../../assets/soidh-clear.png')} style={{ width: 150, height: 150 }} />
+          <Text style={styles.subtitle}>New world to share and keep memories ✨</Text>
+        </View>
+        <View style={styles.dataContainer}>
+          <TextInput
+            placeholder='Mobile No.'
+            style={styles.textinput}
+            placeholderTextColor={COLORS.white}
+            value={phoneNumber}
+            onChangeText={setPhoneNumber} />
+        </View>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity onPress={handlePress}>
+            <View style={styles.button1}>
+              <Text style={styles.btnText}>GET OTP</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-
-    </ImageBackground>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  welcomeText:{
-    fontSize: 40,
-    textAlign: 'center',
-    fontWeight:'800',
-    margin:20,
-    backgroundColor:'#FFF',
-    color: '#590D22'
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+
+  topContainer: {
     alignItems: 'center',
-    padding:10,
-    width:'100%'
+    marginTop: 390,
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    height: Dimensions.get('window').height
   },
   input: {
     height: 50,
@@ -116,6 +124,51 @@ const styles = StyleSheet.create({
   loader: {
     marginTop: 20,
   },
+  title: {
+    color: COLORS.white,
+    fontWeight: 'bold',
+    fontSize: SIZES.h1 * 1.5,
+    paddingHorizontal: 10,
+    backgroundColor: 'rgba(20, 20, 20, 0.1)',
+  },
+  subtitle: {
+    color: COLORS.white,
+    fontSize: SIZES.h4,
+    paddingHorizontal: 10,
+    backgroundColor: 'rgba(20, 20, 20, 0.1)',
+  },
+  dataContainer: {
+    marginTop: 10,
+  },
+  textinput: {
+    color: COLORS.white,
+    fontSize: SIZES.h3,
+    borderBottomColor: COLORS.lightGrey,
+    borderBottomWidth: 1,
+    paddingVertical: 15,
+    marginHorizontal: 15,
+    marginVertical: 5,
+    // backgroundColor: 'rgba(52, 52, 52, 0.4)',
+  },
+  btnContainer: {
+    marginTop: 10,
+  },
+  button1: {
+    backgroundColor: COLORS.secondary,
+    padding: 10,
+    marginHorizontal: 30,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginVertical: 10,
+    fontFamily: 'Poppins-Regular',
+
+  },
+  btnText: {
+    color: COLORS.white,
+    fontSize: SIZES.h4,
+    fontFamily: 'Poppins-Bold',
+  },
+
 });
 
 export default WelcomeScreen;

@@ -31,7 +31,7 @@ const CreateFolder: React.FC = ({navigation}:any) => {
       const folderName = formData.folderName;
       const privacy = formData.isPrivate;
 
-      const response = await createFolder(accountId, jwtToken, folderName, privacy)
+      const response = await createFolder(accountId, jwtToken, folderName, privacy);
 
       // Handle the response as needed
       console.log('Response:', response.data);

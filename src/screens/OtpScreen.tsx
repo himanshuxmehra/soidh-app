@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Alert, ImageBackground, StyleSheet } from 'react-native';
+import { View, TextInput, Alert, ImageBackground, StyleSheet, StatusBar, Dimensions, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { useAuthentication } from '../services/AuthenticationContext';
 
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
 import { generateOtp, verifyOtp } from '../services/api';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import ButtonElement from '../elements/Button';
-import { Text } from 'react-native-elements';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { COLORS, SIZES } from '../constants/theme';
 
 type OtpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Otp'>;
 type OtpScreenRouteProp = RouteProp<RootStackParamList, 'Otp'>;
@@ -88,26 +87,39 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
 
   return (
     <ImageBackground
-      style={{ flex: 1, width: '100%' }}
-      source={require('../../assets/welcome-background.png')}
-      blurRadius={5}
+      style={[{ position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height, zIndex: -1 }]}
+      source={require('../../assets/welcome-bg-5.jpg')}
+      blurRadius={7}
     >
-      <View style={styles.container}>
-      <Text style={styles.welcomeText}>
-          One Step Away! 
-        </Text>
-        <TextInput
-          placeholder="Enter OTP"
-          placeholderTextColor='#A4133C'
-          style={styles.input}
-          keyboardType="numeric" 
-          value={otp} 
-          onChangeText={setOtp} />
-        <TouchableOpacity onPress={handlePress}>
-          <ButtonElement title='Submit'/>
-        </TouchableOpacity>
-      </View>
-    </ImageBackground>
+      <ScrollView>
+        <StatusBar backgroundColor={COLORS.secondary} />
+
+        <View style={styles.overlay}>
+          <View style={styles.topContainer}>
+            <Text style={styles.welcomeText}>
+              One Step Away!
+            </Text>
+            <Text style={styles.subtitle}>Enter OTP 💬</Text>
+          </View>
+          <View style={styles.dataContainer}>
+            <TextInput
+              placeholder='Enter OTP'
+              style={styles.textinput}
+              placeholderTextColor={COLORS.white}
+              value={otp}
+              onChangeText={setOtp} />
+          </View>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity onPress={handlePress}>
+              <View style={styles.button1}>
+                <Text style={styles.btnText}>SIGN IN</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </ImageBackground >
+
   );
 };
 
@@ -117,17 +129,17 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 40,
     textAlign: 'center',
-    fontWeight: '800',
-    margin: 20,
-    backgroundColor: '#FFF',
-    color: '#590D22'
+    marginBottom: 10,
+    color: COLORS.white,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  topContainer: {
     alignItems: 'center',
-    padding: 10,
-    width: '100%'
+    marginTop: 390,
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    height: Dimensions.get('window').height
   },
   input: {
     height: 50,
@@ -140,5 +152,44 @@ const styles = StyleSheet.create({
     color: '#A4133C',
     borderRadius: 10,
     fontSize: 14
+  },
+  subtitle: {
+    color: COLORS.white,
+    fontSize: SIZES.h4,
+    paddingHorizontal: 10,
+    backgroundColor: 'rgba(20, 20, 20, 0.1)',
+  },
+  dataContainer: {
+    marginTop: 10,
+  },
+  textinput: {
+    color: COLORS.white,
+    fontSize: SIZES.h3,
+    borderBottomColor: COLORS.lightGrey,
+    borderBottomWidth: 1,
+    paddingVertical: 15,
+    marginHorizontal: 15,
+    marginVertical: 5,
+    fontFamily: 'Poppins-Light',
+
+    // backgroundColor: 'rgba(52, 52, 52, 0.4)',
+  },
+  btnContainer: {
+    marginTop: 10,
+  },
+  button1: {
+    backgroundColor: COLORS.secondary,
+    padding: 10,
+    marginHorizontal: 30,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginVertical: 10,
+    fontFamily: 'Poppins-Regular',
+
+  },
+  btnText: {
+    color: COLORS.white,
+    fontSize: SIZES.h4,
+    fontFamily: 'Poppins-Bold',
   },
 })

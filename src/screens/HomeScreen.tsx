@@ -12,6 +12,9 @@ import {
 import { useAuthentication } from '../services/AuthenticationContext';
 import FoldersList from '../components/FoldersList';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import SearchBar from '../components/SearchBar';
+import { COLORS } from '../constants/theme';
+import Header from '../components/Header';
 
 const HomeScreen = ({ navigation }: any) => {
     const { isLoggedIn, logOut, username, jwtToken, phoneNumber, accountId }: any = useAuthentication();
@@ -57,40 +60,16 @@ const HomeScreen = ({ navigation }: any) => {
             ]}>
                 <StatusBar
                     animated={true}
-                    backgroundColor="#FF4D6D"
-                    barStyle={'dark-content'}
+                    backgroundColor={COLORS.secondary}
+                    barStyle={'light-content'}
                     hidden={false}
                 />
-                <View style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingTop: 5,
-                    paddingHorizontal: 10,
-                }}>
-                    <Image
-                        source={require('../../assets/menu.png')}
-                        width={32}
-                        height={32}
-                    />
-                    <Text
-                        style={
-                            [styles.headingText, styles.darkText, {
-                            }]
-                        }>
-                        SOIDH
-                    </Text>
-                    <Image
-                        source={require('../../assets/user.png')}
-                        width={32}
-                        height={32}
-                    />
-
-                </View>
-                <Text style={
+                <Header/>
+                {/* <Text style={
                     [styles.welcomeText, styles.darkText]}>
                     Welcome, {username}
-                </Text>
+                </Text> */}
+                <SearchBar/>
                 {/* <View style={{ height: 50, paddingLeft: 10 }}>
                     <Text style={{ color: '#A4133C' }}>{phoneNumber}</Text>
                 </View> */}
@@ -135,7 +114,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         margin: 4,
         color: '#590D22',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-SemiBold',
     },
     welcomeText: {
         fontSize: 20,

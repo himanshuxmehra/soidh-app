@@ -10,6 +10,7 @@ import v4 from 'react-native-uuid';
 import { FlatList } from 'react-native-gesture-handler';
 import AddUsers from '../components/AddUsers';
 import { useAuthentication } from '../services/AuthenticationContext';
+import Toast from 'react-native-toast-message';
 
 type FolderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type FolderScreenRouteProp = RouteProp<RootStackParamList, 'FolderDetails'>;
@@ -55,7 +56,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
         fetchMedia(folder_id, accountId);
     }, []);
 
-    const handleMediaSelected = async (selectedMedia: string[]):Promise<boolean> => {
+    const handleMediaSelected = async (selectedMedia: string[]): Promise<boolean> => {
         // Do something with the selected media (e.g., save to state, upload to server, etc.)
         setSelectedImages(selectedMedia);
         for (var i = 0; i < selectedImages.length; i++) {
@@ -84,6 +85,18 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 const res = [...mediaFiles, ...response.data.media]
                 setMediaFiles(res);
                 console.log('media files:: ', mediaFiles);
+                Toast.show({
+                    type: 'success',
+                    text1: 'Hurray!',
+                    text2: 'Media successfully uploaded👋'
+                });
+                return true;
+            }else{
+                Toast.show({
+                    type: 'danger',
+                    text1: 'Oops!',
+                    text2: 'Media upload failed👋'
+                });
                 return true;
             }
         }
@@ -96,9 +109,9 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
 
         media = media.item
         return <TouchableOpacity onPress={() => {
-              navigation.push('ImageScreen', {
+            navigation.push('ImageScreen', {
                 imageUrl: `${BASE_URL}/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png`
-              })
+            })
         }}>
             <Text key={media.id} style={[styles.darkText]}>
                 {media.id}</Text>

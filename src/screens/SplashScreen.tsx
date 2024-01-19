@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type SplashScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -14,13 +14,19 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     const fakeLoading = setTimeout(() => {
       clearTimeout(fakeLoading);
       navigation.replace('Welcome');
-    }, 1000); // 1000 milliseconds (1 seconds) for demonstration purposes
+    }, 1500); // 1000 milliseconds (1 seconds) for demonstration purposes
     return () => clearTimeout(fakeLoading); // Clear the timeout if the component is unmounted
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Soidh</Text>
+       <ImageBackground
+      style={{ flex: 1, width: '100%' }}
+      source={require('../../assets/splash.png')}
+      blurRadius={0}
+      resizeMode='cover'
+    >
+      </ImageBackground>
       {/* Add any additional elements or styling as needed */}
     </View>
   );

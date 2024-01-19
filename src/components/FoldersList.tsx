@@ -1,6 +1,6 @@
 import { SafeAreaView, ImageBackground, StyleSheet, Text, View, Alert, TouchableOpacity, FlatList, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { getFolders, getSharedFolders } from '../services/api'
+import { BASE_URL, getFolders, getMedia, getSharedFolders } from '../services/api'
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -14,6 +14,7 @@ interface FoldersListProps {
 const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNumber, accountId }) => {
   const [folders, setFolders] = useState([]);
   const [sharedfolders, setSharedFolders] = useState([]);
+  const [mediaFiles, setMediaThumbnail] = useState<{}>({});
 
   const token = jwtToken;
 
@@ -39,9 +40,44 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
         Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
       }
 
+      
+
     };
     fetchFolder();
   }, [])
+
+  const loadThumbnail = async (folder_id:string) => {    
+    const response3 = await getMedia(accountId, folder_id, jwtToken);
+            if (response3.success) {
+                setMediaThumbnail(response3.data.media[0]);
+                console.log("media got in response", mediaFiles)
+                return response3.data.media;
+            } else {
+                Alert.alert('Error', response3.message || 'An error occurred while fetching meida.');
+            }
+  }
+
+  const loadMedia = (folder: any) => {
+
+    folder = folder.item
+    const media=loadThumbnail(folder.folderId);
+    console.log('thumbnail::::',media)
+    return <TouchableOpacity style={[styles.folderListTab]} key={folder.id} onPress={() => {
+      navigation.push('FolderDetails', {
+        folder_id: folder.folder_id,
+        canEdit: true,
+        jwtToken: jwtToken
+      })
+    }}>
+      <ImageBackground
+        style={{ flex: 1, width: '100%' }}
+        source={{ uri: BASE_URL + `/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png` }}
+        blurRadius={0}>
+        <Text style={[styles.folderListTabText]}>
+          {folder.folder_name}</Text>
+      </ImageBackground>
+    </TouchableOpacity>
+  }
 
   return (
     <View style={{
@@ -51,23 +87,14 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
       <View style={styles.folderList}>
 
         {folders ?
-          folders.map((folder: any) => {
-            return <TouchableOpacity style={styles.folderListTab} key={folder.id} onPress={() => {
-              navigation.push('FolderDetails', {
-                folder_id: folder.folder_id,
-                canEdit: true,
-                jwtToken: jwtToken
-              })
-            }}>
-              <ImageBackground
-                style={{ flex: 1, width: '100%' }}
-                source={require('../../assets/foldericon.png')}
-                blurRadius={0}>
-                <Text style={[styles.folderListTabText]}>
-                  {folder.folder_name}</Text>
-              </ImageBackground>
-            </TouchableOpacity>
-          }) : <Text style={[styles.darkText]}>
+          <FlatList
+            style={styles.folderListTab}
+            data={folders}
+            horizontal={true}
+            renderItem={loadMedia}
+            // contentContainerStyle={{ paddingBottom: 100 }}
+          />
+          : <Text style={[styles.darkText]}>
             no folders
           </Text>}
       </View>
@@ -94,6 +121,9 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
         }) : <Text style={[styles.darkText]}>
           no folders
         </Text>}
+
+
+
       </View>
 
 
@@ -131,16 +161,19 @@ const styles = StyleSheet.create({
   },
   folderListTab: {
     marginTop: 5,
-    padding: 10,
+    padding: 5,
     backgroundColor: '#FFCCD5',
     borderRadius: 15,
-    marginHorizontal: 5,
-    width: '30%',
+    marginHorizontal: 2,
+    width:100,
+    height: 200,
   },
   folderListTabText: {
     color: '#A4133C',
     padding: 10,
     fontWeight: '600',
-    paddingVertical: 30
+    paddingVertical: 30,
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
   },
 })
