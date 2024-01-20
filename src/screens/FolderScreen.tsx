@@ -10,6 +10,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import AddUsers from '../components/AddUsers';
 import { useAuthentication } from '../services/AuthenticationContext';
 import Toast from 'react-native-toast-message';
+import { COLORS } from '../constants/theme';
 
 type FolderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type FolderScreenRouteProp = RouteProp<RootStackParamList, 'FolderDetails'>;
@@ -126,7 +127,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 <Text style={styles.privacy}>{folderDetails.privacy ? <Text>Private</Text> : <Text>Public</Text>}</Text>
             </View>
             {canEdit ?
-                <View>
+                <View style={{flexDirection:'row'}}>
                     <AddUsers jwtToken={jwtToken} folder_id={folder_id} />
                     <MediaPicker onMediaSelected={handleMediaSelected} />
                 </View>
@@ -159,23 +160,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 10,
-        backgroundColor: '#FFCCD5',
+        backgroundColor: COLORS.secondary,
         alignSelf: 'center'
     },
     folderName: {
-        color: '#590D22',
+        color: COLORS.white,
         fontSize: 24,
         fontWeight: '800',
         paddingBottom: 5,
     },
     folderId: {
-        color: '#C9184A',
+        color: COLORS.medBg,
         fontSize: 14,
         fontWeight: '700',
         paddingBottom: 5,
     },
     privacy: {
-        color: '#C9184A',
+        color: COLORS.lightBg,
         fontSize: 12,
         fontWeight: '700',
     },

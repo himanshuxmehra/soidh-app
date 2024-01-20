@@ -41,6 +41,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
         Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
       }
 
+      
 
 
     };
@@ -51,7 +52,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
     const response3 = await getMedia(accountId, folder_id, jwtToken);
     if (response3.success) {
       setMediaThumbnail(response3.data.media[0]);
-      console.log("media got in response", mediaFiles)
+      console.log("fetching thumbnails:---", mediaFiles)
       return response3.data.media;
     } else {
       Alert.alert('Error', response3.message || 'An error occurred while fetching meida.');
@@ -61,8 +62,6 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
   const loadMedia = (folder: any) => {
 
     folder = folder.item
-    const media = loadThumbnail(folder.folderId);
-    console.log('thumbnail::::', media)
     return <TouchableOpacity style={[styles.folderListTab]} key={folder.id} onPress={() => {
       navigation.push('FolderDetails', {
         folder_id: folder.folder_id,
@@ -71,9 +70,9 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
       })
     }}>
       <ImageBackground
-        style={{ flex: 1, width: '100%' }}
-        source={{ uri: BASE_URL + `/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png` }}
-        blurRadius={0}>
+        style={{ flex: 1, width: '100%', }}
+        source={{ uri: BASE_URL + `/uploads/${folder.account_id}/${folder.folder_id}/${folder.image_id}.png` }}
+        blurRadius={5}>
         <Text style={[styles.folderListTabText]}>
           {folder.folder_name}</Text>
       </ImageBackground>
@@ -112,7 +111,8 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
             })
           }}>
             <ImageBackground
-              style={{ flex: 1, width: '100%' }}
+              style={{ flex: 1, width: '100%', }}
+              resizeMode='contain'
               source={require('../../assets/foldericon.png')}
               blurRadius={0}>
               <Text style={[styles.folderListTabText]}>
@@ -159,19 +159,20 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   folderListTab: {
-    padding: 5,
+    padding: 0,
     backgroundColor: COLORS.lightBg,
-    borderRadius: 15,
     marginHorizontal: 2,
     width: 100,
     height: 128,
     borderRightWidth: 1,
   },
   folderListTabText: {
-    color: COLORS.primary,
+    color: COLORS.white,
+    backgroundColor: 'rgba(0,0,0,0.3)',
     padding: 10,
     paddingVertical: 30,
     fontSize: 18,
     fontFamily: 'Poppins-Light',
+    height:'100%',
   },
 })

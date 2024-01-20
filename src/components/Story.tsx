@@ -15,7 +15,7 @@ const Story: React.FC<StoryProps> = ({ navigation, profileImage, storyMedia }) =
     const fakeLoading = setTimeout(() => {
         setLoading(false);
         clearTimeout(fakeLoading);
-    }, 5000); // 1000 milliseconds (1 seconds) for demonstration purposes
+    }, 1500); // 1000 milliseconds (1 seconds) for demonstration purposes
     return (
         <TouchableOpacity onPress={() => {
             navigation.push('StoryScreen', {
@@ -45,17 +45,17 @@ export default Story
 
 const styles = StyleSheet.create({
     storyContainer: {
-        backgroundColor: COLORS.medBg,
-        width: 64,
-        height: 64,
+        backgroundColor: COLORS.primary,
+        width: 68,
+        height: 68,
         borderRadius: 100,
         marginRight: 5,
         marginLeft: 5,
         marginVertical: 5,
     },
     storyLoader: {
-        width: 64,
-        height: 64,
+        width: 68,
+        height: 68,
         borderRadius: 100,
         marginRight: 5,
         marginLeft: 5,
@@ -65,5 +65,7 @@ const styles = StyleSheet.create({
         width: 64,
         height: 64,
         borderRadius: 100,
+        marginVertical:2,
+        marginHorizontal:2,
     },
 })

@@ -4,6 +4,7 @@ import { View, Button, Image, FlatList, StyleSheet, TouchableOpacity, Text, Aler
 import { launchImageLibrary } from 'react-native-image-picker';
 
 import RNFS from 'react-native-fs';
+import { COLORS } from '../constants/theme';
 
 interface MediaPickerProps {
   onMediaSelected: (media: string[]) => void;
@@ -76,18 +77,16 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
 
 
   return (
-    <View style={{ width: '80%', alignSelf:'center'}}>
+    <View style={{ width: '67%', alignSelf: 'center', }}>
+      <View style={styles.uploadButtonsContainer}>
+        <TouchableOpacity style={styles.uploadButton} onPress={handleDone}>
+          <Text style={styles.buttonText}>Upload</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.uploadButton} onPress={openImagePicker}>
+        <Text style={styles.buttonText}>Open Gallery</Text>
+        </TouchableOpacity>
+      </View>
 
-      {isUploading ?
-        <TouchableOpacity onPress={handleDone}>
-          <View style={styles.uploadButton}>
-            <Text style={styles.buttonText}>Upload</Text>
-          </View>
-        </TouchableOpacity> : <TouchableOpacity onPress={openImagePicker}>
-          <View style={styles.uploadButton}>
-            <Text style={styles.buttonText}>Open Gallery</Text>
-          </View>
-        </TouchableOpacity>}
       <FlatList
         data={displaySelectedMedia}
         keyExtractor={(item) => item}
@@ -102,16 +101,22 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
 export default MediaPicker;
 
 const styles = StyleSheet.create({
+  uploadButtonsContainer: {
+    // flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
   uploadButton: {
-    borderRadius: 20,
-    padding: 10,
-    backgroundColor: '#c9184a',
-    margin: 5,
-    textAlign: 'center',
+    borderRadius: 100,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: COLORS.primary,
+    marginVertical: 2,
+    width: '49%'
   },
   buttonText: {
-    color: '#fff0f3',
+    color: COLORS.white,
     textAlign: 'center',
-
+    fontSize: 12,
   }
 })
