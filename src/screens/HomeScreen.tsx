@@ -7,6 +7,7 @@ import {
     StyleSheet,
     ScrollView,
     RefreshControl,
+    Dimensions,
 } from 'react-native';
 import { useAuthentication } from '../services/AuthenticationContext';
 import FoldersList from '../components/FoldersList';
@@ -15,6 +16,7 @@ import SearchBar from '../components/SearchBar';
 import { COLORS } from '../constants/theme';
 import Header from '../components/Header';
 import Stories from '../components/Stories';
+import RecentGallery from '../components/RecentGallery';
 
 const HomeScreen = ({ navigation }: any) => {
     const { isLoggedIn, logOut, username, jwtToken, phoneNumber, accountId }: any = useAuthentication();
@@ -56,6 +58,7 @@ const HomeScreen = ({ navigation }: any) => {
                 {
                     flex: 1,
                     overflow: "hidden",
+                    height: Dimensions.get('window').height,
                 },
             ]}>
                 <StatusBar
@@ -65,7 +68,7 @@ const HomeScreen = ({ navigation }: any) => {
                     hidden={false}
                 />
                 <Header/>
-                <Stories/>
+            <Stories/>
                 {/* <Text style={
                     [styles.welcomeText, styles.darkText]}>
                     Welcome, {username}
@@ -76,8 +79,9 @@ const HomeScreen = ({ navigation }: any) => {
                 </View> */}
                 <FoldersList navigation={navigation} jwtToken={jwtToken} phoneNumber={phoneNumber} accountId={accountId} />
                 
+                <RecentGallery navigation={navigation} jwtToken={jwtToken} phoneNumber={phoneNumber} accountId={accountId} />
 
-                <TouchableOpacity onPress={handlePress}>
+                {/* <TouchableOpacity onPress={handlePress}>
                     <View style={styles.logoutButton}>
                         <Text style={{ color: '#FFF' }}>Create Folder</Text>
                     </View>
@@ -90,8 +94,8 @@ const HomeScreen = ({ navigation }: any) => {
                     <View style={styles.logoutButton}>
                         <Text style={{ color: '#FFF' }}>Logout</Text>
                     </View>
-                </TouchableOpacity>
-                <View style={{height:100}}></View>
+                </TouchableOpacity> */}
+                {/* <View style={{height:100}}></View> */}
             </View>
         </ScrollView>
     );

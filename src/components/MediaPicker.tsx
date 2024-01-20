@@ -12,8 +12,11 @@ interface MediaPickerProps {
 const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
   const [displaySelectedMedia, setDisplaySelectedMedia] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const openImagePicker = () => {
+    setIsUploading(!isUploading);
+
     const options: any = {
       mediaType: 'mixed', // 'photo' or 'video' or 'mixed'
       quality: 1,
@@ -45,14 +48,26 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
     });
   };
 
-  const renderSelectedMedia = ({ item }: { item: any }) => {
-    return <Image source={{ uri: item.uri }} style={{ width: 100, height: 100, margin: 5 }} />;
+  const renderSelectedMedia = ({ item, index }: { item: any, index: number }) => {
+    return <Image key={index} source={{ uri: item.uri }} style={{ width: 100, height: 100, margin: 5 }} />;
   };
 
+  const clearPicker = () => {
+    setDisplaySelectedMedia([]);
+  }
   const handleDone = () => {
+    setIsUploading(!isUploading);
     // Pass the selected media to the parent component
     if (selectedMedia.length != 0) {
-      onMediaSelected(selectedMedia);
+      let uploadCheck = onMediaSelected(selectedMedia);
+      console.log('------------------------------------------------------',
+        displaySelectedMedia, '------------------------------------------------------', selectedMedia);
+      if (uploadCheck) {
+        setDisplaySelectedMedia([]);
+        setSelectedMedia([]);
+      }
+      console.log('------------------------------------------------------',
+        displaySelectedMedia, '------------------------------------------------------', selectedMedia);
     } else {
       Alert.alert('Error', 'Please select atleast 1 media');
     }
@@ -61,23 +76,25 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
 
 
   return (
-    <View style={{ width: '100%' }}>
-      <TouchableOpacity onPress={openImagePicker}>
-        <View style={styles.uploadButton}>
-          <Text style={styles.buttonText}>Open Gallery</Text>
-        </View>
-      </TouchableOpacity>
+    <View style={{ width: '80%', alignSelf:'center'}}>
+
+      {isUploading ?
+        <TouchableOpacity onPress={handleDone}>
+          <View style={styles.uploadButton}>
+            <Text style={styles.buttonText}>Upload</Text>
+          </View>
+        </TouchableOpacity> : <TouchableOpacity onPress={openImagePicker}>
+          <View style={styles.uploadButton}>
+            <Text style={styles.buttonText}>Open Gallery</Text>
+          </View>
+        </TouchableOpacity>}
       <FlatList
         data={displaySelectedMedia}
         keyExtractor={(item) => item}
         renderItem={renderSelectedMedia}
         horizontal
       />
-      <TouchableOpacity onPress={handleDone}>
-        <View style={styles.uploadButton}>
-          <Text style={styles.buttonText}>Upload</Text>
-        </View>
-      </TouchableOpacity>
+
     </View>
   );
 };
@@ -87,14 +104,14 @@ export default MediaPicker;
 const styles = StyleSheet.create({
   uploadButton: {
     borderRadius: 20,
-    width: '70%',
-    alignItems: 'center',
     padding: 10,
     backgroundColor: '#c9184a',
     margin: 5,
-    alignSelf: 'center'
+    textAlign: 'center',
   },
   buttonText: {
-    color: '#fff0f3'
+    color: '#fff0f3',
+    textAlign: 'center',
+
   }
 })

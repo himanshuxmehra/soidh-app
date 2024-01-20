@@ -16,7 +16,7 @@ const SearchBar = () => {
             style={[styles.searchTextInput]}
             onChangeText={onChangeText}
             placeholder='Search Photos, Things, Places'
-            placeholderTextColor={'rgba(255, 255, 255, 0.8)'}
+            placeholderTextColor={COLORS.secondary}
             value={text}
           />
         </Pressable>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     left: 20,
     marginBottom: 10,
     paddingRight: 20,
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.lightBg,
     borderRadius: 75,
   },
   searchTextInput: {

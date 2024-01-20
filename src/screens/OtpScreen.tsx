@@ -52,6 +52,16 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
     }
   }, []); // Include phoneNumber as a dependency
 
+  const handleTextChange = (newText : string) => {
+    // Ensure only numeric characters are allowed
+    const filteredText = newText.replace(/[^0-9]/g, '');
+
+    // Limit the input to 6 characters
+    const limitedText = filteredText.substring(0, 6);
+
+    setOtp(limitedText);
+  };
+
   const handlePress = async () => {
     // Validate OTP
     if (otp.length === 6 && /^\d+$/.test(otp)) {
@@ -103,11 +113,13 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           </View>
           <View style={styles.dataContainer}>
             <TextInput
-              placeholder='Enter OTP'
+              placeholder='_ _ _ _ _ _'
               style={styles.textinput}
               placeholderTextColor={COLORS.white}
               value={otp}
-              onChangeText={setOtp} />
+              maxLength={6}
+              keyboardType="numeric"
+              onChangeText={handleTextChange} />
           </View>
           <View style={styles.btnContainer}>
             <TouchableOpacity onPress={handlePress}>
@@ -131,7 +143,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
     color: COLORS.white,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   topContainer: {
     alignItems: 'center',
@@ -157,21 +169,22 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SIZES.h4,
     paddingHorizontal: 10,
-    backgroundColor: 'rgba(20, 20, 20, 0.1)',
+    // backgroundColor: 'rgba(20, 20, 20, 0.1)',
   },
   dataContainer: {
     marginTop: 10,
+    textAlign: 'center',
   },
   textinput: {
     color: COLORS.white,
-    fontSize: SIZES.h3,
+    fontSize: SIZES.h2,
     borderBottomColor: COLORS.lightGrey,
     borderBottomWidth: 1,
     paddingVertical: 15,
     marginHorizontal: 15,
     marginVertical: 5,
     fontFamily: 'Poppins-Light',
-
+    textAlign: 'center',
     // backgroundColor: 'rgba(52, 52, 52, 0.4)',
   },
   btnContainer: {

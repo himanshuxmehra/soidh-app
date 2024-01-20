@@ -1,4 +1,4 @@
-import { Dimensions, Image, ImageBackground, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
 import { StackNavigationProp } from '@react-navigation/stack';

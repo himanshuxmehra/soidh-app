@@ -1,8 +1,7 @@
-import { Text, View, TouchableOpacity, ScrollView, Image, Alert, StyleSheet, TouchableWithoutFeedback, ActivityIndicator } from 'react-native'
+import { Text, View, TouchableOpacity, Image, Alert, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Button } from 'react-native-elements';
 import MediaPicker from '../components/MediaPicker';
 import { uploadMedia, getMedia, BASE_URL, getFolderDetails } from '../services/api';
 
@@ -90,14 +89,14 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                     text1: 'Hurray!',
                     text2: 'Media successfully uploaded👋'
                 });
-                return true;
+                // return true;
             }else{
                 Toast.show({
                     type: 'danger',
                     text1: 'Oops!',
                     text2: 'Media upload failed👋'
                 });
-                return true;
+                // return false;
             }
         }
         console.log('Selected Media:', selectedMedia);
