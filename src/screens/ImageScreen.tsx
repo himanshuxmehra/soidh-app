@@ -4,6 +4,7 @@ import React from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import ButtonElement from '../elements/Button';
+import FastImage from 'react-native-fast-image';
 
 type ImageScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type ImageScreenRouteProp = RouteProp<RootStackParamList, 'ImageScreen'>;
@@ -15,7 +16,7 @@ interface ImageScreenProps {
 }
 
 const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
-    const { imageUrl } = route.params;
+    const { imageUrl, jwtToken } = route.params;
     console.log(route);
     return (
         <ImageBackground
@@ -26,12 +27,18 @@ const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
                 <TouchableOpacity onPress={() => {
                     navigation.goBack();
                 }}>
-                    <ButtonElement title='Back' />
+                    <ButtonElement title=' X ' />
                 </TouchableOpacity>
                 <View style={styles.imageContainer}>
-                    <Image
+
+                    <FastImage
+                        source={{
+                            uri: imageUrl,
+                            headers: { Authorization: `bearer ${jwtToken}` },
+                            priority: FastImage.priority.normal,
+                        }}
                         style={styles.image}
-                        source={{ uri: imageUrl }} />
+                    />
                 </View>
             </View>
 
@@ -47,20 +54,17 @@ export default ImageScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems:'center',
+        alignItems: 'flex-end',
     },
     imageContainer: {
-        width: windowWidth-20,
-        height: windowHeight-100,
-        justifyContent: 'center',
-        padding: 5,
-        alignItems:'center',
+        paddingHorizontal: 20,
+        marginTop: 0,
+        alignSelf: 'center',
     },
 
     image: {
-        flex: 1,
-        resizeMode: 'contain',
-        width: '100%',
-        justifyContent: 'center',
+        width: windowWidth - 20,
+        height: windowHeight,
+        alignSelf: 'center',
     }
 })

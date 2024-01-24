@@ -58,7 +58,6 @@ const HomeScreen = ({ navigation }: any) => {
                 {
                     flex: 1,
                     overflow: "hidden",
-                    height: Dimensions.get('window').height,
                 },
             ]}>
                 <StatusBar
@@ -80,7 +79,6 @@ const HomeScreen = ({ navigation }: any) => {
                 <FoldersList navigation={navigation} jwtToken={jwtToken} phoneNumber={phoneNumber} accountId={accountId} />
                 
                 <RecentGallery navigation={navigation} jwtToken={jwtToken} phoneNumber={phoneNumber} accountId={accountId} />
-
                 {/* <TouchableOpacity onPress={handlePress}>
                     <View style={styles.logoutButton}>
                         <Text style={{ color: '#FFF' }}>Create Folder</Text>

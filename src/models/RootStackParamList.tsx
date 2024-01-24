@@ -4,6 +4,7 @@ type RootStackParamList = {
   Home: undefined;
   CreateFolder: undefined;
   FolderDetails: { folder_id: string, canEdit: boolean, jwtToken: string };
-  ImageScreen: { imageUrl: string };
-  StoryScreen: { storyUrl: string };
+  ImageScreen: { imageUrl: string, jwtToken: string };
+  StoryScreen: { storyUrl: string, jwtToken: string };
+  ImagePagerScreen : {};
 };

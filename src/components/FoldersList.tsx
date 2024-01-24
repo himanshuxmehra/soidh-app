@@ -83,7 +83,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
     <View style={{
     }}>
       {/* <Text style={[styles.darkText]}>{token}</Text> */}
-      <Text style={[styles.folderText]}>Your Folders:</Text>
+      <Text style={[styles.folderText]}>Your Folders</Text>
       <View style={styles.folderList}>
 
         {folders ?
@@ -99,7 +99,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
           </Text>}
       </View>
 
-      <Text style={[styles.folderText]}>Shared with me</Text>
+      {/* <Text style={[styles.folderText]}>Shared with me</Text>
 
       <View style={styles.folderList}>
         {sharedfolders ? sharedfolders.map((folder: any) => {
@@ -125,7 +125,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
 
 
 
-      </View>
+      </View> */}
 {/*   <View style={
         {
           marginVertical: 10,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   folderList: {
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    // paddingVertical: 10,
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap'
@@ -161,9 +161,10 @@ const styles = StyleSheet.create({
   folderListTab: {
     padding: 0,
     backgroundColor: COLORS.lightBg,
-    marginHorizontal: 2,
+    marginRight: 0,
     width: 100,
     height: 128,
+    // paddingRight: 8,
     borderRightWidth: 1,
   },
   folderListTabText: {

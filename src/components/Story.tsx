@@ -8,9 +8,10 @@ interface StoryProps {
     profileImage: string,
     storyMedia: string,
     navigation: any,
+    jwtToken: string,
 }
 
-const Story: React.FC<StoryProps> = ({ navigation, profileImage, storyMedia }) => {
+const Story: React.FC<StoryProps> = ({ navigation, profileImage, storyMedia, jwtToken }) => {
     let [loading, setLoading] = useState<boolean>(true);
     const fakeLoading = setTimeout(() => {
         setLoading(false);

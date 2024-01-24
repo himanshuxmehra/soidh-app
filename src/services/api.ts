@@ -208,3 +208,20 @@ export const getSharedFolders = async (
     throw error;
   }
 };
+
+export const getRecentMedia = async (
+  accountId: string, jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    const response: AxiosResponse<ApiResponse> = await api.post('/get-recent-media', { accountId }, { headers });
+    console.log("getRecentMedia reponse=", response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Error in getRecentMedia call:', error);
+    throw error;
+  }
+};

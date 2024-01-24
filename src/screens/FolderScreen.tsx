@@ -110,7 +110,8 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
         media = media.item
         return <TouchableOpacity onPress={() => {
             navigation.push('ImageScreen', {
-                imageUrl: `${BASE_URL}/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png`
+                imageUrl: `${BASE_URL}/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png`,
+                jwtToken: jwtToken,
             })
         }}>
             <Text key={media.id} style={[styles.darkText]}>

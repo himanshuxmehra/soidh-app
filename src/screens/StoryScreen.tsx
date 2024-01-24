@@ -6,6 +6,7 @@ import { RouteProp } from '@react-navigation/native';
 import ButtonElement from '../elements/Button';
 import ContentLoader, { Rect } from 'react-content-loader/native'
 import { COLORS } from '../constants/theme';
+import FastImage from 'react-native-fast-image';
 
 
 type StoryScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
@@ -20,12 +21,12 @@ interface StoryScreenProps {
 }
 
 const StoryScreen: React.FC<StoryScreenProps> = ({ navigation, route }) => {
-    const { storyUrl } = route.params;
+    const { storyUrl, jwtToken } = route.params;
     let [loading, setLoading] = useState<boolean>(true);
     const fakeLoading = setTimeout(() => {
         setLoading(false);
         clearTimeout(fakeLoading);
-    }, 1500);
+    }, 1000);
     console.log(route);
     return (
         <ImageBackground
@@ -50,9 +51,14 @@ const StoryScreen: React.FC<StoryScreenProps> = ({ navigation, route }) => {
                 >
                     <Rect x="0" y="0" rx="1" ry="1" width={windowWidth} height={windowHeight - 10} />
                 </ContentLoader> : <View style={styles.storyContainer}>
-                    <Image
+                    <FastImage
+                        source={{
+                            uri: storyUrl,
+                            headers: { Authorization: `bearer ${jwtToken}` },
+                            priority: FastImage.priority.normal,
+                        }}
                         style={styles.story}
-                        source={{ uri: storyUrl }} />
+                    />
                 </View>}
 
             </View>

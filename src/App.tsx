@@ -15,6 +15,7 @@ import { AuthenticationProvider } from './services/AuthenticationContext';
 import PostLogin from './screens/PostLogin';
 import ImageScreen from './screens/ImageScreen';
 import StoryScreen from './screens/StoryScreen';
+import ImagePagerScreen from './screens/ImagePagerScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   FolderDetails: { folder_id: string, canEdit: boolean, jwtToken: string },
   ImageScreen: {imageUrl: string},
   StoryScreen: {storyUrl: string},
+  ImagePagerScreen: {},
 };
 
 
@@ -38,6 +40,7 @@ export function HomeTabs() {
           <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
           <Stack.Screen name="FolderDetails" component={FolderScreen} options={{headerShown:false}} />
           <Stack.Screen name="ImageScreen" component={ImageScreen} options={{headerShown:false}} />
+          <Stack.Screen name="ImagePagerScreen" component={ImagePagerScreen} options={{headerShown:false}} />
         </Stack.Navigator>
   );
 }

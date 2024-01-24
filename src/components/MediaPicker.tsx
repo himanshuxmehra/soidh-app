@@ -22,6 +22,8 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
       mediaType: 'mixed', // 'photo' or 'video' or 'mixed'
       quality: 1,
       noData: true,
+      videoQuality: 'high',
+      includeExtra: 'includeExtra',
     };
 
     launchImageLibrary(options, (response) => {
@@ -64,8 +66,8 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
       console.log('------------------------------------------------------',
         displaySelectedMedia, '------------------------------------------------------', selectedMedia);
       if (uploadCheck) {
-        setDisplaySelectedMedia([]);
-        setSelectedMedia([]);
+        // setDisplaySelectedMedia([]);
+        // setSelectedMedia([]);
       }
       console.log('------------------------------------------------------',
         displaySelectedMedia, '------------------------------------------------------', selectedMedia);
