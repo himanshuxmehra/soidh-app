@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Image, Alert, StyleSheet, ActivityIndicator } from 'react-native'
+import { Text, View, TouchableOpacity, Image, Alert, StyleSheet, ActivityIndicator, FlatList, ScrollView, ImageBackground, Dimensions } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -6,15 +6,18 @@ import MediaPicker from '../components/MediaPicker';
 import { uploadMedia, getMedia, BASE_URL, getFolderDetails } from '../services/api';
 
 import v4 from 'react-native-uuid';
-import { FlatList } from 'react-native-gesture-handler';
 import AddUsers from '../components/AddUsers';
 import { useAuthentication } from '../services/AuthenticationContext';
 import Toast from 'react-native-toast-message';
 import { COLORS } from '../constants/theme';
+import { MasonryFlashList } from '@shopify/flash-list';
+import FastImage from 'react-native-fast-image';
 
 type FolderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type FolderScreenRouteProp = RouteProp<RootStackParamList, 'FolderDetails'>;
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 interface FolderScreenProps {
     navigation: FolderScreenNavigationProp;
@@ -91,11 +94,11 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                     text2: 'Media successfully uploaded👋'
                 });
                 // return true;
-            }else{
+            } else {
                 Toast.show({
-                    type: 'danger',
+                    type: 'error',
                     text1: 'Oops!',
-                    text2: 'Media upload failed👋'
+                    text2: 'Media upload failed🥺'
                 });
                 // return false;
             }
@@ -105,20 +108,55 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
         return true;
     };
 
+    let [height, setHeightState] = useState<number>(200);
+    let [width, setWidthState] = useState<number>(300);
+
+
     const loadMedia = (media: any) => {
 
         media = media.item
-        return <TouchableOpacity onPress={() => {
-            navigation.push('ImageScreen', {
-                imageUrl: `${BASE_URL}/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png`,
-                jwtToken: jwtToken,
-            })
-        }}>
-            <Text key={media.id} style={[styles.darkText]}>
-                {media.id}</Text>
+        let imageUrl = `${BASE_URL}/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png`;
 
-            <Image source={{ uri: BASE_URL + `/uploads/${media.account_id}/${media.folder_id}/${media.image_id}.png` }} style={{ width: 125, height: 100, margin: 5 }} />
-        </TouchableOpacity>
+        Image.getSize(imageUrl, (width, height) => {
+            setWidthState(width);
+            setHeightState(height);
+        });
+
+        // const headers = {
+        //     Authorization: `Bearer ${jwtToken}`,
+        // };
+        return <ImageBackground
+            style={{ flex: 1, width: '100%', height: height || 200 }}
+            source={{ uri: imageUrl }}
+            blurRadius={0}>
+            <TouchableOpacity onPress={() => {
+                navigation.push('ImageScreen', {
+                    imageUrl: imageUrl,
+                    jwtToken: jwtToken,
+                })
+
+            }}
+                style={{
+                    width: '100%',
+                    height: height * (width / height),
+                }}
+            >
+                <Text key={media.id} style={[styles.mediaName]}>
+                    {media.id}</Text>
+
+                {/* <FastImage
+                    source={{
+                        uri: imageUrl,
+                        headers: headers,
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    style={{
+                        width: '100%',
+                        // height: height,
+                    }} /> */}
+            </TouchableOpacity>
+        </ImageBackground>
     }
     return (
         <>
@@ -128,7 +166,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 <Text style={styles.privacy}>{folderDetails.privacy ? <Text>Private</Text> : <Text>Public</Text>}</Text>
             </View>
             {canEdit ?
-                <View style={{flexDirection:'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                     <AddUsers jwtToken={jwtToken} folder_id={folder_id} />
                     <MediaPicker onMediaSelected={handleMediaSelected} />
                 </View>
@@ -136,13 +174,21 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 </>}
             {loading && <ActivityIndicator style={styles.loader} />}
 
-            <FlatList
+            {/* <FlatList
                 style={styles.gallery}
                 data={mediaFiles}
                 horizontal={false}
                 numColumns={3}
                 renderItem={loadMedia}
                 contentContainerStyle={{ paddingBottom: 100 }}
+            /> */}
+
+            <MasonryFlashList
+                style={styles.gallery}
+                data={mediaFiles}
+                numColumns={2}
+                renderItem={loadMedia}
+                estimatedItemSize={200}
             />
 
         </>
@@ -153,8 +199,9 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
 export default FolderScreen
 
 const styles = StyleSheet.create({
-    darkText: {
-        color: '#000',
+    mediaName: {
+        color: COLORS.grey,
+        marginBottom: -15
     },
     headerContainer: {
         width: '100%',
@@ -182,7 +229,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     gallery: {
-        alignSelf: 'center',
+        // alignSelf: 'center',
         paddingBottom: 15
     },
     loader: {

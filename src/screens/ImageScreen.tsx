@@ -18,10 +18,16 @@ interface ImageScreenProps {
 const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
     const { imageUrl, jwtToken } = route.params;
     console.log(route);
+    const headers = {
+        Authorization: `Bearer ${jwtToken}`,
+    };
     return (
         <ImageBackground
             style={{ flex: 1, width: '100%' }}
-            source={{ uri: imageUrl }}
+            source={{
+                uri: imageUrl,
+                headers: headers,
+            }}
             blurRadius={50}>
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => {
@@ -34,7 +40,7 @@ const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
                     <FastImage
                         source={{
                             uri: imageUrl,
-                            headers: { Authorization: `bearer ${jwtToken}` },
+                            headers: headers,
                             priority: FastImage.priority.normal,
                         }}
                         style={styles.image}

@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }: any) => {
                     hidden={false}
                 />
                 <Header/>
-            <Stories/>
+            <Stories  jwtToken={jwtToken} />
                 {/* <Text style={
                     [styles.welcomeText, styles.darkText]}>
                     Welcome, {username}

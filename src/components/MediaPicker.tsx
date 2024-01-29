@@ -5,6 +5,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 
 import RNFS from 'react-native-fs';
 import { COLORS } from '../constants/theme';
+import Toast from 'react-native-toast-message';
 
 interface MediaPickerProps {
   onMediaSelected: (media: string[]) => void;
@@ -23,15 +24,21 @@ const MediaPicker: React.FC<MediaPickerProps> = ({ onMediaSelected }) => {
       quality: 1,
       noData: true,
       videoQuality: 'high',
-      includeExtra: 'includeExtra',
+      includeExtra: true,
     };
 
     launchImageLibrary(options, (response) => {
       console.log(response)
       if (response.didCancel) {
         console.log('Image picker cancelled');
+        Toast.show({
+          type: 'error',
+          text1: 'Oops!',
+          text2: 'Image picker cancelled'
+      });
       } else if (response.errorMessage) {
         console.log('Image picker error:', response.errorMessage);
+        
       } else {
         let len = response.assets?.length || 0
         if (len > 0) {

@@ -71,7 +71,11 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
     }}>
       <ImageBackground
         style={{ flex: 1, width: '100%', }}
-        source={{ uri: BASE_URL + `/uploads/${folder.account_id}/${folder.folder_id}/${folder.image_id}.png` }}
+        source={{ 
+          uri: BASE_URL + `/uploads/${folder.account_id}/${folder.folder_id}/${folder.image_id}.png`, 
+          headers: { Authorization: `bearer ${jwtToken}` },
+        
+        }}
         blurRadius={5}>
         <Text style={[styles.folderListTabText]}>
           {folder.folder_name}</Text>

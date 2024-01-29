@@ -85,6 +85,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
             style={styles.textinput}
             placeholderTextColor={COLORS.white}
             value={phoneNumber}
+            keyboardType="numeric"
             onChangeText={setPhoneNumber} />
         </View>
         <View style={styles.btnContainer}>
