@@ -44,6 +44,7 @@ const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
                             priority: FastImage.priority.normal,
                         }}
                         style={styles.image}
+                        resizeMode={FastImage.resizeMode.contain}
                     />
                 </View>
             </View>

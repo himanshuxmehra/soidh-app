@@ -39,6 +39,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
 
 
     useEffect(() => {
+        console.log(folder_id)
         async function fetchMedia(folder_id: string, accountId: string) {
             const response = await getMedia(accountId, folder_id, jwtToken);
             if (response.success) {
@@ -121,15 +122,10 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
             setWidthState(width);
             setHeightState(height);
         });
-
-        // const headers = {
-        //     Authorization: `Bearer ${jwtToken}`,
-        // };
-        return <ImageBackground
-            style={{ flex: 1, width: '100%', height: height || 200 }}
-            source={{ uri: imageUrl }}
-            blurRadius={0}>
-            <TouchableOpacity onPress={() => {
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`,
+        };
+        return <TouchableOpacity onPress={() => {
                 navigation.push('ImageScreen', {
                     imageUrl: imageUrl,
                     jwtToken: jwtToken,
@@ -137,14 +133,13 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
 
             }}
                 style={{
-                    width: '100%',
-                    height: height * (width / height),
+                   
                 }}
             >
                 <Text key={media.id} style={[styles.mediaName]}>
                     {media.id}</Text>
 
-                {/* <FastImage
+                <FastImage
                     source={{
                         uri: imageUrl,
                         headers: headers,
@@ -153,10 +148,9 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                     resizeMode={FastImage.resizeMode.cover}
                     style={{
                         width: '100%',
-                        // height: height,
-                    }} /> */}
+                        height: (height * (width / height)),
+                    }} />
             </TouchableOpacity>
-        </ImageBackground>
     }
     return (
         <>
@@ -229,8 +223,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     gallery: {
-        // alignSelf: 'center',
-        paddingBottom: 15
+        flex: 1,
+        width: '100%',
     },
     loader: {
         marginTop: 20,

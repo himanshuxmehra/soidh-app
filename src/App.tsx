@@ -16,6 +16,7 @@ import PostLogin from './screens/PostLogin';
 import ImageScreen from './screens/ImageScreen';
 import StoryScreen from './screens/StoryScreen';
 import ImagePagerScreen from './screens/ImagePagerScreen';
+import Feed from './screens/Feed';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   ImageScreen: {imageUrl: string},
   StoryScreen: {storyUrl: string},
   ImagePagerScreen: {},
+  Feed: any
 };
 
 
@@ -38,6 +40,7 @@ export function HomeTabs() {
     <Stack.Navigator initialRouteName="HomeScreen">
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
           <Stack.Screen name="CreateFolder" component={CreateFolder} options={{headerShown:false}} />
+          <Stack.Screen name="Feed" component={Feed} options={{headerShown:false}} />
           <Stack.Screen name="FolderDetails" component={FolderScreen} options={{headerShown:false}} />
           <Stack.Screen name="ImageScreen" component={ImageScreen} options={{headerShown:false}} />
           <Stack.Screen name="ImagePagerScreen" component={ImagePagerScreen} options={{headerShown:false}} />
@@ -54,7 +57,6 @@ const App: React.FC = () => {
           <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Otp" component={OtpScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="StoryScreen" component={StoryScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={PostLogin} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

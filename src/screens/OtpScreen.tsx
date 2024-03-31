@@ -86,7 +86,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           const shortName: string = uniqueNamesGenerator(customConfig);
 
           logIn(shortName, phoneNumber, jwtToken, accountId);
-          navigation.replace('Home');
+          navigation.push('Home');
         }
       } else {
         Alert.alert('Invalid OTP', 'Please enter a valid 6-digit OTP.');

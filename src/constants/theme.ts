@@ -13,6 +13,7 @@ export const COLORS = {
     secondary: '#020024',
     lightBg:'#F1FAEE',
     medBg:'#A8DADC',
+    red: '#E63946',
 };
 
 export const SIZES = {

@@ -24,7 +24,7 @@ const NavigationIcon = ({ route, isFocused }: NavigationIconProps) => {
             style={styles.iconSize}
             source={require('../../assets/home.png')} />
         );
-      case 'folder':
+      case 'feed':
         return isFocues ? (
           <Image
             source={require('../../assets/hashtag-focused.png')}

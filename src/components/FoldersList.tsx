@@ -2,7 +2,7 @@ import { SafeAreaView, ImageBackground, StyleSheet, Text, View, Alert, Touchable
 import React, { useEffect, useState } from 'react'
 import { BASE_URL, getFolders, getMedia, getSharedFolders } from '../services/api'
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '../constants/theme';
+import { COLORS, SIZES } from '../constants/theme';
 
 
 interface FoldersListProps {
@@ -41,9 +41,6 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
         Alert.alert('Error', response2.message || 'An error occurred while fetching shared folders.');
       }
 
-      
-
-
     };
     fetchFolder();
   }, [])
@@ -71,10 +68,10 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
     }}>
       <ImageBackground
         style={{ flex: 1, width: '100%', }}
-        source={{ 
-          uri: BASE_URL + `/uploads/${folder.account_id}/${folder.folder_id}/${folder.image_id}.png`, 
+        source={{
+          uri: BASE_URL + `/uploads/${folder.account_id}/${folder.folder_id}/${folder.image_id}.png`,
           headers: { Authorization: `bearer ${jwtToken}` },
-        
+
         }}
         blurRadius={5}>
         <Text style={[styles.folderListTabText]}>
@@ -87,7 +84,30 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
     <View style={{
     }}>
       {/* <Text style={[styles.darkText]}>{token}</Text> */}
-      <Text style={[styles.folderText]}>Your Folders</Text>
+      <View style={{
+        display: 'flex',
+        flexDirection: 'row'
+      }}>
+        <Text style={[styles.folderText]}>Your Folders</Text>
+
+        <TouchableOpacity onPress={() => {
+          navigation.push('CreateFolder')
+        }}>
+          <View style={{
+            marginLeft: 5,
+            marginTop: 2,
+            borderRadius: 100,
+            backgroundColor: COLORS.secondary,
+            height: 26,
+          }}>
+            <Text style={{
+              fontSize: SIZES.h3,
+              color: COLORS.white,
+              paddingHorizontal: 10,
+            }}>+</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <View style={styles.folderList}>
 
         {folders ?
@@ -130,7 +150,7 @@ const FoldersList: React.FC<FoldersListProps> = ({ navigation, jwtToken, phoneNu
 
 
       </View> */}
-{/*   <View style={
+      {/*   <View style={
         {
           marginVertical: 10,
           borderTopColor: '#00FFFF',
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
   },
   folderText: {
     paddingLeft: 20,
-    fontSize: 18,
+    fontSize: SIZES.h3,
     fontFamily: 'Poppins-Bold',
     color: COLORS.primary,
   },
@@ -178,6 +198,6 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     fontSize: 18,
     fontFamily: 'Poppins-Light',
-    height:'100%',
+    height: '100%',
   },
 })

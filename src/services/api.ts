@@ -3,10 +3,11 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 // export const BASE_URL = 'https://soidh-sv.halfstackengineer.xyz'; // API URL
 export const BASE_URL = 'http://10.0.2.2:3333'; // API URL
 
-interface ApiResponse<T = any> {
+export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   message?: string;
+  status: number;
   // Add additional properties based on your API response structure
 }
 
@@ -222,6 +223,23 @@ export const getRecentMedia = async (
     return response.data;
   } catch (error) {
     console.error('Error in getRecentMedia call:', error);
+    throw error;
+  }
+};
+
+export const checkToken = async (
+ jwtToken: string
+): Promise<ApiResponse> => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json', // Adjust the content type based on your API requirements
+    };
+    console.log(headers);
+    const response: AxiosResponse<ApiResponse> = await api.get('/', { headers });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };
