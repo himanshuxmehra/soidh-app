@@ -6,6 +6,10 @@ This repository is the app built using react-native for Soidh which is an mobile
 
 ## Screenshots
 
+<img src='https://soidh.halfstackengineer.xyz/screenshots/1.png' height="500"/> <img src='https://soidh.halfstackengineer.xyz/screenshots/2.png' height="500"/>
+
+<img src='https://soidh.halfstackengineer.xyz/screenshots/3.png' height="500"/> <img src='https://soidh.halfstackengineer.xyz/screenshots/4.png' height="500"/> <img src='https://soidh.halfstackengineer.xyz/screenshots/5.png' height="500"/>
+
 
 ## Run Locally
 
