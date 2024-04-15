@@ -1,50 +1,48 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
-import { useAuthentication } from '../services/AuthenticationContext';
+import { View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
+
 
 const Notes = () => {
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
 
-  // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const contacts = [
+    { id: 1, name: 'Albert Johns', phone: '+7 8585 57 45 41' },
+    { id: 2, name: 'Arlene McCoy', phone: '+7 8585 57 45 41' },
+    { id: 3, name: 'Annette Black', phone: '+7 8585 57 45 41' },
+    { id: 4, name: 'Albert Flores', phone: '+7 8585 57 45 41' },
+    { id: 5, name: 'Alex Black', phone: '+7 8585 57 45 41' },
+    // Add more contacts as needed
+  ];
 
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-  const { isLoggedIn, jwtToken, logOut } = useAuthentication();
-  console.log(jwtToken)
-  useEffect(() => {
-    const checkSession = async (jwtToken: string) => {
-      try {
-        console.log(jwtToken)
-        if (isLoggedIn) {
-          // User is already logged in, navigate to Home screen
-          console.log("Success")
-
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    checkSession(jwtToken);
-  }, []);
+  const renderItem = ({ item }) => (
+    <View style={styles.contactItem}>
+      <View style={styles.avatarContainer}>
+        <Text style={styles.avatarText}>DT</Text>
+      </View>
+      <View style={styles.contactDetails}>
+        <Text style={styles.contactName}>{item.name}</Text>
+        <Text style={styles.contactName}>{item.phone}</Text>
+      </View>
+      <View style={styles.iconContainer}>
+        <Text style={styles.iconText}>I</Text>
+      </View>
+    </View>
+  );
 
   // renders
   return (
     <View style={styles.container}>
-      {/* <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
-        <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
-        </View>
-      </BottomSheet> */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search"
+          placeholderTextColor="#ccc"
+        />
+      </View>
+      <FlatList
+        data={contacts}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
     </View>
   );
 };
@@ -52,12 +50,51 @@ const Notes = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: 'grey',
+    backgroundColor: '#fff',
   },
-  contentContainer: {
-    flex: 1,
+  searchContainer: {
+    padding: 10,
+  },
+  searchInput: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  contactItem: {
+    flexDirection: 'row',
     alignItems: 'center',
+    padding: 10,
+  },
+  avatarContainer: {
+    backgroundColor: '#ccc',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  contactDetails: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  contactName: {
+    fontWeight: 'bold',
+  },
+  iconContainer: {
+    backgroundColor: '#ccc',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconText: {
+    color: '#fff',
   },
 });
 

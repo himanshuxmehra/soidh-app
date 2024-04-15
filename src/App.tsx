@@ -26,7 +26,7 @@ export type RootStackParamList = {
   HomeScreen: any,
   CreateFolder: any,
   FolderDetails: { folder_id: string, canEdit: boolean, jwtToken: string },
-  ImageScreen: {imageUrl: string},
+  ImageScreen: {imageUrl: string, imageId: string},
   StoryScreen: {storyUrl: string},
   ImagePagerScreen: {},
   Feed: any

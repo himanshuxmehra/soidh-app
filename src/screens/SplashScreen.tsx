@@ -11,26 +11,16 @@ interface SplashScreenProps {
 }
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
-  const { isLoggedIn, jwtToken, logOut } = useAuthentication();
-  console.log(jwtToken)
-  useEffect(() => {
-    // fix it here
-    const checkSession = async (jwtToken: string) => {
-      try {
-        console.log(jwtToken)
 
-        const response = await checkToken(jwtToken);
-        if (response.status === 200 && isLoggedIn) {
-          // User is already logged in, navigate to Home screen
-          navigation.replace('Home');
-        }
-      } catch (err) {
-        logOut();
-        navigation.replace('Welcome');
-      }
-    }
-    checkSession(jwtToken);
-  }, []);
+  useEffect(() => {
+    // Simulate some loading process (e.g., fetching data, initializing resources)
+    const fakeLoading = setTimeout(() => {
+      clearTimeout(fakeLoading);
+      navigation.replace('Welcome');
+    }, 1500); // 1000 milliseconds (1 seconds) for demonstration purposes
+    return () => clearTimeout(fakeLoading); // Clear the timeout if the component is unmounted
+  }, [navigation]);
+
 
   return (
     <View style={styles.container}>

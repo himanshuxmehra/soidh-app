@@ -1,14 +1,13 @@
 import { Dimensions, Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import ButtonElement from '../elements/Button';
 import FastImage from 'react-native-fast-image';
+import Animated from 'react-native-reanimated';
 
 type ImageScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type ImageScreenRouteProp = RouteProp<RootStackParamList, 'ImageScreen'>;
-
 
 interface ImageScreenProps {
     navigation: ImageScreenNavigationProp;
@@ -16,7 +15,7 @@ interface ImageScreenProps {
 }
 
 const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
-    const { imageUrl, jwtToken } = route.params;
+    const { imageUrl, jwtToken, imageId } = route.params;
     console.log(route);
     const headers = {
         Authorization: `Bearer ${jwtToken}`,
@@ -35,8 +34,11 @@ const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
                 }}>
                     <ButtonElement title=' X ' />
                 </TouchableOpacity>
-                <View style={styles.imageContainer}>
-
+                <Animated.View style={[styles.imageContainer, {
+                    width: windowWidth - 20,
+                    height: windowHeight,
+                    alignSelf: 'center',
+                }]} sharedTransitionTag={`${imageId}`}>
                     <FastImage
                         source={{
                             uri: imageUrl,
@@ -46,11 +48,9 @@ const ImageScreen: React.FC<ImageScreenProps> = ({ navigation, route }) => {
                         style={styles.image}
                         resizeMode={FastImage.resizeMode.contain}
                     />
-                </View>
+                </Animated.View>
             </View>
-
         </ImageBackground>
-
     )
 }
 const windowWidth = Dimensions.get('window').width;

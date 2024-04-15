@@ -15,7 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 import { useAuthentication } from '../services/AuthenticationContext';
-import { checkPhoneNumber } from '../services/api';
+import { checkPhoneNumber, checkToken } from '../services/api';
 import { Text } from 'react-native-elements';
 import { COLORS, SIZES } from '../constants/theme';
 
@@ -31,7 +31,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   const { isLoggedIn, jwtToken } = useAuthentication();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
     if (isLoggedIn) {
       // User is already logged in, navigate to Home screen

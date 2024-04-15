@@ -67,12 +67,12 @@ const HomeScreen = ({ navigation }: any) => {
                     hidden={false}
                 />
                 <Header/>
-            <Stories  jwtToken={jwtToken} />
+            {/* <Stories  jwtToken={jwtToken} /> */}
                 {/* <Text style={
                     [styles.welcomeText, styles.darkText]}>
                     Welcome, {username}
                 </Text> */}
-                <SearchBar/>
+                {/* <SearchBar/> */}
                 {/* <View style={{ height: 50, paddingLeft: 10 }}>
                     <Text style={{ color: '#A4133C' }}>{phoneNumber}</Text>
                 </View> */}

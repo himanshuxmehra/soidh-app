@@ -1,17 +1,20 @@
-import { Text, View, TouchableOpacity, Image, Alert, StyleSheet, ActivityIndicator, FlatList, ScrollView, ImageBackground, Dimensions } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { Text, View, TouchableOpacity, Image, Alert, StyleSheet, ActivityIndicator, FlatList, ScrollView, ImageBackground, Dimensions, Switch, Button, TextInput, Keyboard } from 'react-native'
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import MediaPicker from '../components/MediaPicker';
-import { uploadMedia, getMedia, BASE_URL, getFolderDetails } from '../services/api';
+import { uploadMedia, getMedia, BASE_URL, getFolderDetails, shareFolder } from '../services/api';
 
 import v4 from 'react-native-uuid';
 import AddUsers from '../components/AddUsers';
 import { useAuthentication } from '../services/AuthenticationContext';
 import Toast from 'react-native-toast-message';
-import { COLORS } from '../constants/theme';
+import { COLORS, SIZES } from '../constants/theme';
 import { MasonryFlashList } from '@shopify/flash-list';
 import FastImage from 'react-native-fast-image';
+import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import BottomSheet from '@gorhom/bottom-sheet';
+import ButtonElement from '../elements/Button';
 
 type FolderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FolderDetails'>;
 type FolderScreenRouteProp = RouteProp<RootStackParamList, 'FolderDetails'>;
@@ -126,32 +129,94 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
             Authorization: `Bearer ${jwtToken}`,
         };
         return <TouchableOpacity onPress={() => {
-                navigation.push('ImageScreen', {
-                    imageUrl: imageUrl,
-                    jwtToken: jwtToken,
-                })
+            navigation.navigate('ImageScreen', {
+                imageUrl: imageUrl,
+                imageId: media.image_id,
+                jwtToken: jwtToken,
+            })
+
+        }}
+        onLongPress={() => {
+            console.log('Long Press')
+        }}
+        delayLongPress={1000}
+            style={{
 
             }}
-                style={{
-                   
+        >
+            {/* <Text key={media.id} style={[styles.mediaName]}>
+                {media.id}</Text> */}
+            <Animated.View entering={FadeInUp.duration(500).delay(200)}>
+                <Animated.View style={{
+                    width: '100%',
+                    height: (height * (width / height)),
                 }}
-            >
-                <Text key={media.id} style={[styles.mediaName]}>
-                    {media.id}</Text>
-
-                <FastImage
-                    source={{
-                        uri: imageUrl,
-                        headers: headers,
-                        priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={FastImage.resizeMode.cover}
-                    style={{
-                        width: '100%',
-                        height: (height * (width / height)),
-                    }} />
-            </TouchableOpacity>
+                    sharedTransitionTag={`${media.image_id}`}>
+                    <FastImage
+                        source={{
+                            uri: imageUrl,
+                            headers: headers,
+                            priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={{
+                            width: '100%',
+                            height: (height * (width / height)),
+                        }} />
+                </Animated.View>
+            </Animated.View>
+        </TouchableOpacity>
     }
+    //---bottom sheet---
+
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const handleSubmitForm = async () => {
+        // Replace this with your API call logic
+        const phoneNumber = phone;
+        const canEdit = permission;
+
+        const response = await shareFolder(phoneNumber, folder_id, canEdit, jwtToken);
+        if (response.success) {
+            console.log("got in response", response.data);
+            Toast.show({
+                type: 'success',
+                text1: 'hurray!',
+                text2: 'successfully shared👋'
+            });
+            Keyboard.dismiss();
+            bottomSheetRef.current?.close();
+
+
+        } else {
+            Alert.alert('Error', response.message || 'An error occurred while sharing folder.');
+            Toast.show({
+                type: 'error',
+                text1: 'oops!',
+                text2: 'sharing failed🥺'
+            });
+        }
+        console.log('Form Data Submitted', response);
+    };
+
+    // ref
+
+    // variables
+    const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+    const handleOpenModal = () => {
+        bottomSheetRef.current?.expand();
+    };
+
+    const handleCloseModal = () => {
+        Keyboard.dismiss();
+        bottomSheetRef.current?.close();
+    };
+    // callbacks
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
+    const [phone, setPhone] = useState(7);
+    const [permission, setPermission] = useState(false);
     return (
         <>
             <View style={styles.headerContainer}>
@@ -161,7 +226,14 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
             </View>
             {canEdit ?
                 <View style={{ flexDirection: 'row' }}>
-                    <AddUsers jwtToken={jwtToken} folder_id={folder_id} />
+                    <View style={{ width: '33%' }}>
+                        <TouchableOpacity onPress={handleOpenModal}>
+                            <View style={styles.addButton}>
+
+                                <Text style={styles.buttonText}>Share with</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                     <MediaPicker onMediaSelected={handleMediaSelected} />
                 </View>
                 : <>
@@ -177,6 +249,7 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 contentContainerStyle={{ paddingBottom: 100 }}
             /> */}
 
+
             <MasonryFlashList
                 style={styles.gallery}
                 data={mediaFiles}
@@ -184,7 +257,45 @@ const FolderScreen: React.FC<FolderScreenProps> = ({ navigation, route }) => {
                 renderItem={loadMedia}
                 estimatedItemSize={200}
             />
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={-1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+                enablePanDownToClose={true}
+            >
 
+                <View style={styles.contentContainer}>
+                    <Text style={{ color: COLORS.secondary, fontSize: SIZES.h4 }}>Enter the phone number with you want to share 🎉</Text>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <View>
+                                <Text style={{ color: COLORS.primary, fontSize: SIZES.h4 }}>Share with:</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={phone}
+                                    onChangeText={(text) => setPhone(text)}
+                                />
+                            </View>
+                            <View style={styles.permissionInput}>
+                                <Text style={styles.allowEditText}>Allow editing:</Text>
+                                <Switch style={{
+
+                                }}
+                                    value={permission} onValueChange={() => setPermission(!permission)} />
+                            </View>
+                            <View style={{ paddingTop: 10, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                                <TouchableOpacity style={styles.actionButtons} onPress={handleSubmitForm}>
+                                    <ButtonElement title="Submit" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.actionButtons} onPress={handleCloseModal}>
+                                    <ButtonElement title="Close" />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </BottomSheet>
         </>
     )
 }
@@ -228,5 +339,54 @@ const styles = StyleSheet.create({
     },
     loader: {
         marginTop: 20,
+    }, addButton: {
+        borderRadius: 100,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: COLORS.primary,
+        marginVertical: 2,
+        width: '100%'
     },
+    buttonText: {
+        color: COLORS.white,
+        textAlign: 'center',
+        fontSize: 12,
+    },
+    contentContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    centeredView: {
+        justifyContent: "center",
+        alignSelf: "center",
+        width: '100%'
+    },
+    input: {
+        height: 40,
+        borderColor: COLORS.primary,
+        borderBottomWidth: 1,
+        marginBottom: 10,
+        width: '100%',
+    },
+    permissionInput: {
+        color: '#000',
+        paddingVertical: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    allowEditText: {
+        color: COLORS.primary,
+        fontSize: SIZES.h4,
+    },
+    modalView: {
+        marginHorizontal: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        paddingVertical: 10,
+        width: '90%'
+    },
+    actionButtons: {
+        width: '30%',
+        paddingTop: 5,
+    }
 })

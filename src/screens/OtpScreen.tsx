@@ -45,11 +45,12 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
     };
 
     fetchOtp(); // Call the function when the component mounts
-    if (isLoggedIn) {
-      // User is already logged in, navigate to Home screen
-      navigation.replace('Home');
-      // return null; // Render nothing if navigating away
-    }
+    // if (isLoggedIn) {
+    //   // User is already logged in, navigate to Home screen
+    //   // console.log(isLoggedIn," -- moving to home");
+    //   // navigation.replace('Home');
+    //   // return null; // Render nothing if navigating away
+    // }
   }, []); // Include phoneNumber as a dependency
 
   const handleTextChange = (newText : string) => {
@@ -84,10 +85,11 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           };
           console.log("success", rotp)
           const shortName: string = uniqueNamesGenerator(customConfig);
-
           logIn(shortName, phoneNumber, jwtToken, accountId);
-          navigation.push('Home');
+
         }
+        if(isLoggedIn)
+            navigation.replace('Home');
       } else {
         Alert.alert('Invalid OTP', 'Please enter a valid 6-digit OTP.');
       }
