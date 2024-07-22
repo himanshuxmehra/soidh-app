@@ -1,7 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-
 
 interface NavigationIconProps {
   route: string;
@@ -9,20 +8,20 @@ interface NavigationIconProps {
 }
 const height: number = 25;
 const width: number = 25;
-const NavigationIcon = ({ route, isFocused }: NavigationIconProps) => {
+const NavigationIcon = ({route, isFocused}: NavigationIconProps) => {
   const renderIcon = (route: string, isFocues: boolean) => {
-
-
     switch (route) {
       case 'home':
         return isFocues ? (
           <Image
             style={styles.iconSize}
-            source={require('../../assets/home-focused.png')} />
+            source={require('../../assets/home-focused.png')}
+          />
         ) : (
           <Image
             style={styles.iconSize}
-            source={require('../../assets/home.png')} />
+            source={require('../../assets/home.png')}
+          />
         );
       case 'feed':
         return isFocues ? (
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
   iconSize: {
     width: width,
     height: height,
-  }
+  },
 });
 
 export default NavigationIcon;

@@ -1,12 +1,17 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect } from 'react'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect} from 'react';
 
-import { useAuthentication } from '../services/AuthenticationContext';
-import { Button } from 'react-native-elements';
+import {useAuthentication} from '../services/AuthenticationContext';
+import {Button} from 'react-native-elements';
 
-
-const Account = ({ navigation }: any) => {
-  const { isLoggedIn, logOut, username, phoneNumber }: any = useAuthentication();
+const Account = ({navigation}: any) => {
+  const {isLoggedIn, logOut, username, phoneNumber}: any = useAuthentication();
   if (!isLoggedIn) {
     // User is already logged in, navigate to Home screen
     navigation.replace('Welcome');
@@ -45,10 +50,10 @@ const Account = ({ navigation }: any) => {
         </View>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default Account
+export default Account;
 
 const styles = StyleSheet.create({
   settingsHeading: {
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
   accountText: {
     paddingLeft: 20,
     fontSize: 18,
-    color: '#C9184A'
+    color: '#C9184A',
   },
   accountListTab: {
     marginTop: 5,
@@ -90,6 +95,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#c9184a',
-    alignSelf: 'center'
-  }
-})
+    alignSelf: 'center',
+  },
+});

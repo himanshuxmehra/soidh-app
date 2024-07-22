@@ -1,13 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Alert, ImageBackground, StyleSheet, StatusBar, Dimensions, Text } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import { useAuthentication } from '../services/AuthenticationContext';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  TextInput,
+  Alert,
+  ImageBackground,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  Text,
+} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
+import {useAuthentication} from '../services/AuthenticationContext';
 
-import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
-import { generateOtp, verifyOtp } from '../services/api';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { COLORS, SIZES } from '../constants/theme';
+import {
+  uniqueNamesGenerator,
+  Config,
+  adjectives,
+  colors,
+  animals,
+} from 'unique-names-generator';
+import {generateOtp, verifyOtp} from '../services/api';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {COLORS, SIZES} from '../constants/theme';
 
 type OtpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Otp'>;
 type OtpScreenRouteProp = RouteProp<RootStackParamList, 'Otp'>;
@@ -17,11 +32,11 @@ interface OtpScreenProps {
   route: OtpScreenRouteProp;
 }
 
-const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
-  const { isLoggedIn, logIn } = useAuthentication();
+const OtpScreen: React.FC<OtpScreenProps> = ({navigation, route}) => {
+  const {isLoggedIn, logIn} = useAuthentication();
   const [otp, setOtp] = useState('');
   const [rotp, setROtp] = useState('');
-  const { phoneNumber } = route.params;
+  const {phoneNumber} = route.params;
 
   useEffect(() => {
     // Make the generateOtp API call when the component mounts
@@ -36,7 +51,10 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           setROtp(response.data.otp);
           console.log(rotp);
         } else {
-          Alert.alert('Error', response.message || 'An error occurred while generating OTP.');
+          Alert.alert(
+            'Error',
+            response.message || 'An error occurred while generating OTP.',
+          );
         }
       } catch (error) {
         console.error('Error in generateOtp call:', error);
@@ -53,7 +71,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
     // }
   }, []); // Include phoneNumber as a dependency
 
-  const handleTextChange = (newText : string) => {
+  const handleTextChange = (newText: string) => {
     // Ensure only numeric characters are allowed
     const filteredText = newText.replace(/[^0-9]/g, '');
 
@@ -75,7 +93,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           const jwtToken = response.data.token;
           const accountId = String(response.data.accountId);
 
-          // Generating Random Usernames 
+          // Generating Random Usernames
           // ToDo: this can move after otp is entered
           const customConfig: Config = {
             dictionaries: [adjectives, colors, animals],
@@ -83,45 +101,47 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
             length: 3,
             style: 'capital',
           };
-          console.log("success", rotp)
+          console.log('success', rotp);
           const shortName: string = uniqueNamesGenerator(customConfig);
           logIn(shortName, phoneNumber, jwtToken, accountId);
-
         }
-        if(isLoggedIn)
-            navigation.replace('Home');
+        if (isLoggedIn) navigation.replace('Home');
       } else {
         Alert.alert('Invalid OTP', 'Please enter a valid 6-digit OTP.');
       }
     }
   };
 
-
   return (
     <ImageBackground
-      style={[{ position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height, zIndex: -1 }]}
+      style={[
+        {
+          position: 'absolute',
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+          zIndex: -1,
+        },
+      ]}
       source={require('../../assets/welcome-bg-5.jpg')}
-      blurRadius={7}
-    >
+      blurRadius={7}>
       <ScrollView>
         <StatusBar backgroundColor={COLORS.secondary} />
 
         <View style={styles.overlay}>
           <View style={styles.topContainer}>
-            <Text style={styles.welcomeText}>
-              One Step Away!
-            </Text>
+            <Text style={styles.welcomeText}>One Step Away!</Text>
             <Text style={styles.subtitle}>Enter OTP 💬</Text>
           </View>
           <View style={styles.dataContainer}>
             <TextInput
-              placeholder='_ _ _ _ _ _'
+              placeholder="_ _ _ _ _ _"
               style={styles.textinput}
               placeholderTextColor={COLORS.white}
               value={otp}
               maxLength={6}
               keyboardType="numeric"
-              onChangeText={handleTextChange} />
+              onChangeText={handleTextChange}
+            />
           </View>
           <View style={styles.btnContainer}>
             <TouchableOpacity onPress={handlePress}>
@@ -132,8 +152,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ navigation, route }) => {
           </View>
         </View>
       </ScrollView>
-    </ImageBackground >
-
+    </ImageBackground>
   );
 };
 
@@ -153,7 +172,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
   },
   input: {
     height: 50,
@@ -165,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     color: '#A4133C',
     borderRadius: 10,
-    fontSize: 14
+    fontSize: 14,
   },
   subtitle: {
     color: COLORS.white,
@@ -200,11 +219,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
     fontFamily: 'Poppins-Regular',
-
   },
   btnText: {
     color: COLORS.white,
     fontSize: SIZES.h4,
     fontFamily: 'Poppins-Bold',
   },
-})
+});

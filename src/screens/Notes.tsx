@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
-
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {View, Text, FlatList, StyleSheet, TextInput} from 'react-native';
 
 const Notes = () => {
-
   const contacts = [
-    { id: 1, name: 'Albert Johns', phone: '+7 8585 57 45 41' },
-    { id: 2, name: 'Arlene McCoy', phone: '+7 8585 57 45 41' },
-    { id: 3, name: 'Annette Black', phone: '+7 8585 57 45 41' },
-    { id: 4, name: 'Albert Flores', phone: '+7 8585 57 45 41' },
-    { id: 5, name: 'Alex Black', phone: '+7 8585 57 45 41' },
+    {id: 1, name: 'Albert Johns', phone: '+7 8585 57 45 41'},
+    {id: 2, name: 'Arlene McCoy', phone: '+7 8585 57 45 41'},
+    {id: 3, name: 'Annette Black', phone: '+7 8585 57 45 41'},
+    {id: 4, name: 'Albert Flores', phone: '+7 8585 57 45 41'},
+    {id: 5, name: 'Alex Black', phone: '+7 8585 57 45 41'},
     // Add more contacts as needed
   ];
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.contactItem}>
       <View style={styles.avatarContainer}>
         <Text style={styles.avatarText}>DT</Text>
@@ -41,7 +39,7 @@ const Notes = () => {
       <FlatList
         data={contacts}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
       />
     </View>
   );

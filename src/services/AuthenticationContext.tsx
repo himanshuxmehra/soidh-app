@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {createContext, useContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthenticationContextProps {
@@ -7,13 +7,20 @@ interface AuthenticationContextProps {
   phoneNumber: string | null;
   jwtToken: string | null;
   accountId: string | null;
-  logIn: (username: string, phoneNumber: string, jwtToken: string, accountId: string) => void;
+  logIn: (
+    username: string,
+    phoneNumber: string,
+    jwtToken: string,
+    accountId: string,
+  ) => void;
   logOut: () => void;
 }
 
-const AuthenticationContext = createContext<AuthenticationContextProps | undefined>(undefined);
+const AuthenticationContext = createContext<
+  AuthenticationContextProps | undefined
+>(undefined);
 
-export const AuthenticationProvider = ({ children }: any) => {
+export const AuthenticationProvider = ({children}: any) => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
@@ -32,7 +39,6 @@ export const AuthenticationProvider = ({ children }: any) => {
       const savedPhoneNumber = await AsyncStorage.getItem('phoneNumber');
       const savedToken = await AsyncStorage.getItem('jwtToken');
       const savedAccountId = await AsyncStorage.getItem('accountId');
-
 
       if (status !== null) {
         setLoggedIn(JSON.parse(status));
@@ -58,14 +64,25 @@ export const AuthenticationProvider = ({ children }: any) => {
     }
   };
 
-  const logIn = (newUsername: string, newPhoneNumber: string, newJwtToken: string, newAccountId: string) => {
+  const logIn = (
+    newUsername: string,
+    newPhoneNumber: string,
+    newJwtToken: string,
+    newAccountId: string,
+  ) => {
     setLoggedIn(true);
     setUsername(newUsername);
     setPhoneNumber(newPhoneNumber);
     setJwtToken(newJwtToken);
     setAccountId(newAccountId);
     // Save authentication status, username, and phoneNumber to AsyncStorage
-    saveAuthenticationStatus(true, newUsername, newPhoneNumber, newJwtToken, newAccountId);
+    saveAuthenticationStatus(
+      true,
+      newUsername,
+      newPhoneNumber,
+      newJwtToken,
+      newAccountId,
+    );
   };
 
   const logOut = () => {
@@ -84,8 +101,7 @@ export const AuthenticationProvider = ({ children }: any) => {
     newUsername: string | null,
     newPhoneNumber: string | null,
     newToken: string | null,
-    newAccountId: string | null
-
+    newAccountId: string | null,
   ) => {
     try {
       await AsyncStorage.setItem('isLoggedIn', JSON.stringify(status));
@@ -93,15 +109,22 @@ export const AuthenticationProvider = ({ children }: any) => {
       await AsyncStorage.setItem('phoneNumber', newPhoneNumber || '');
       await AsyncStorage.setItem('jwtToken', newToken || '');
       await AsyncStorage.setItem('accountId', newAccountId || '');
-
-
     } catch (error) {
       console.error('Error saving authentication status:', error);
     }
   };
 
   return (
-    <AuthenticationContext.Provider value={{ isLoggedIn, username, phoneNumber, jwtToken, accountId, logIn, logOut }}>
+    <AuthenticationContext.Provider
+      value={{
+        isLoggedIn,
+        username,
+        phoneNumber,
+        jwtToken,
+        accountId,
+        logIn,
+        logOut,
+      }}>
       {children}
     </AuthenticationContext.Provider>
   );
@@ -110,7 +133,9 @@ export const AuthenticationProvider = ({ children }: any) => {
 export const useAuthentication = (): AuthenticationContextProps => {
   const context = useContext(AuthenticationContext);
   if (!context) {
-    throw new Error('useAuthentication must be used within an AuthenticationProvider');
+    throw new Error(
+      'useAuthentication must be used within an AuthenticationProvider',
+    );
   }
   return context;
 };

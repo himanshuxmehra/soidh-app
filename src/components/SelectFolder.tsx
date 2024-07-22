@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { COLORS } from '../constants/theme'
-import { getFolders, getSharedFolders } from '../services/api';
-import { useAuthentication } from '../services/AuthenticationContext';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {COLORS} from '../constants/theme';
+import {getFolders, getSharedFolders} from '../services/api';
+import {useAuthentication} from '../services/AuthenticationContext';
 
 const SelectFolder = ({selectedFolder, setSelectedFolder}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [folders, setFolders] = useState<any[]>();
-  const { phoneNumber, jwtToken, accountId } = useAuthentication();
+  const {phoneNumber, jwtToken, accountId} = useAuthentication();
 
   useEffect(() => {
     const fetchFolders = async () => {
@@ -15,59 +15,67 @@ const SelectFolder = ({selectedFolder, setSelectedFolder}) => {
       let ownFolders = await getFolders(accountId, jwtToken);
       const sharedsFolders = sharedFolders.data.folders;
       const ownsFolders = ownFolders.data.folders;
-      const res = [...ownsFolders, ...sharedsFolders]
+      const res = [...ownsFolders, ...sharedsFolders];
       setFolders(res);
-    }
+    };
     fetchFolders();
     //todo: move this to asyncstorage so that you dont have to send calls
-
-  }, [])
+  }, []);
 
   const showDropDown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-  }
+  };
 
   const loadList = (folder: any) => {
-
-    folder = folder.item
-    return <TouchableOpacity key={folder.id} onPress={() => {
-      setSelectedFolder(folder);
-      setIsDropdownOpen(false);
-    }}>
-      <Text style={{ color: COLORS.white }}>{folder.folder_name}</Text>
-    </TouchableOpacity>
-  }
+    folder = folder.item;
+    return (
+      <TouchableOpacity
+        key={folder.id}
+        onPress={() => {
+          setSelectedFolder(folder);
+          setIsDropdownOpen(false);
+        }}>
+        <Text style={{color: COLORS.white}}>{folder.folder_name}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.container}>
-      {isDropdownOpen ? <View>
-        {folders ?
-        <View style={{borderBottomColor:COLORS.secondary, borderBottomWidth:1}}>
-          <FlatList
-            data={folders}
-            horizontal={false}
-            renderItem={loadList}
-          />
-          </View>
-          :
-          <Text>
-            no folders
-          </Text>
-        }
-      </View> : <></>}
+      {isDropdownOpen ? (
+        <View>
+          {folders ? (
+            <View
+              style={{
+                borderBottomColor: COLORS.secondary,
+                borderBottomWidth: 1,
+              }}>
+              <FlatList
+                data={folders}
+                horizontal={false}
+                renderItem={loadList}
+              />
+            </View>
+          ) : (
+            <Text>no folders</Text>
+          )}
+        </View>
+      ) : (
+        <></>
+      )}
       <View style={styles.button}>
         <TouchableOpacity onPress={showDropDown}>
-          {selectedFolder.folder_id ? <Text style={styles.name}>
-            {selectedFolder.folder_name}
-          </Text> : <Text style={styles.name}>
-            SelectFolder /
-          </Text>}
+          {selectedFolder.folder_id ? (
+            <Text style={styles.name}>{selectedFolder.folder_name}</Text>
+          ) : (
+            <Text style={styles.name}>SelectFolder /</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default SelectFolder
+export default SelectFolder;
 
 const styles = StyleSheet.create({
   container: {
@@ -89,5 +97,5 @@ const styles = StyleSheet.create({
   },
   foldersList: {
     color: COLORS.white,
-  }
-})
+  },
+});

@@ -1,15 +1,16 @@
-
 # Soidh App
 
 This repository is the app built using react-native for Soidh which is an mobile app to share images in groups easily!
 
+Server repos:
+[soidh-sv](https://github.com/himanshuxmehra/soidh-sv)
+[soidh-media-service](https://github.com/himanshuxmehra/soidh-media-service)
 
 ## Screenshots
 
 <img src='https://soidh.halfstackengineer.xyz/screenshots/1.png' height="500"/> <img src='https://soidh.halfstackengineer.xyz/screenshots/2.png' height="500"/>
 
 <img src='https://soidh.halfstackengineer.xyz/screenshots/3.png' height="500"/> <img src='https://soidh.halfstackengineer.xyz/screenshots/4.png' height="500"/> <img src='https://soidh.halfstackengineer.xyz/screenshots/5.png' height="500"/>
-
 
 ## Run Locally
 
@@ -31,7 +32,7 @@ Install dependencies
   npm install
 ```
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 Start the Metro server, the JavaScript _bundler_ that ships _with_ React Native.
 
@@ -50,6 +51,7 @@ npm run android
 # for ios
 npm run ios
 ```
+
 ## License
 
 [GNU AGPLv3](https://choosealicense.com/licenses/agpl-3.0/)

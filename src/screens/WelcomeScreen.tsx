@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TextInput,
@@ -8,18 +8,21 @@ import {
   ScrollView,
   Image,
   StatusBar,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
 
-import { useAuthentication } from '../services/AuthenticationContext';
-import { checkPhoneNumber, checkToken } from '../services/api';
-import { Text } from 'react-native-elements';
-import { COLORS, SIZES } from '../constants/theme';
+import {useAuthentication} from '../services/AuthenticationContext';
+import {checkPhoneNumber, checkToken} from '../services/api';
+import {Text} from 'react-native-elements';
+import {COLORS, SIZES} from '../constants/theme';
 
-type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
+type WelcomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Welcome'
+>;
 type WelcomeScreenRouteProp = RouteProp<RootStackParamList, 'Welcome'>;
 
 interface WelcomeScreenProps {
@@ -27,18 +30,18 @@ interface WelcomeScreenProps {
   route: WelcomeScreenRouteProp;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
-  const { isLoggedIn, jwtToken } = useAuthentication();
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
+  const {isLoggedIn, jwtToken} = useAuthentication();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     if (isLoggedIn) {
       // User is already logged in, navigate to Home screen
       navigation.replace('Home');
       // return null; // Render nothing if navigating away
     }
-  }, [])
+  }, []);
 
   const handlePress = async () => {
     try {
@@ -52,11 +55,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         if (response.success) {
           setLoading(false);
           // Handle the response
-          navigation.navigate('Otp', { phoneNumber });
+          navigation.navigate('Otp', {phoneNumber});
         }
       } else {
         setLoading(false);
-        Alert.alert('Invalid phone number', 'Please enter a valid 10-digit phone number.');
+        Alert.alert(
+          'Invalid phone number',
+          'Please enter a valid 10-digit phone number.',
+        );
       }
     } catch (error) {
       setLoading(false);
@@ -69,24 +75,37 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
     <ScrollView>
       <StatusBar backgroundColor={COLORS.secondary} />
       <Image
-        style={[{ position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height, zIndex: -1 }]}
+        style={[
+          {
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+            zIndex: -1,
+          },
+        ]}
         source={require('../../assets/welcome-bg-5.jpg')}
         blurRadius={7}
-        resizeMode='cover'
+        resizeMode="cover"
       />
       <View style={styles.overlay}>
         <View style={styles.topContainer}>
-          <Image source={require('../../assets/soidh-clear.png')} style={{ width: 150, height: 150 }} />
-          <Text style={styles.subtitle}>New world to share and keep memories ✨</Text>
+          <Image
+            source={require('../../assets/soidh-clear.png')}
+            style={{width: 150, height: 150}}
+          />
+          <Text style={styles.subtitle}>
+            New world to share and keep memories ✨
+          </Text>
         </View>
         <View style={styles.dataContainer}>
           <TextInput
-            placeholder='Mobile No.'
+            placeholder="Mobile No."
             style={styles.textinput}
             placeholderTextColor={COLORS.white}
             value={phoneNumber}
             keyboardType="numeric"
-            onChangeText={setPhoneNumber} />
+            onChangeText={setPhoneNumber}
+          />
         </View>
         <View style={styles.btnContainer}>
           <TouchableOpacity onPress={handlePress}>
@@ -101,14 +120,13 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-
   topContainer: {
     alignItems: 'center',
     marginTop: 390,
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
   },
   input: {
     height: 50,
@@ -120,7 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     color: '#A4133C',
     borderRadius: 10,
-    fontSize: 14
+    fontSize: 14,
   },
   loader: {
     marginTop: 20,
@@ -162,14 +180,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
     fontFamily: 'Poppins-Regular',
-
   },
   btnText: {
     color: COLORS.white,
     fontSize: SIZES.h4,
     fontFamily: 'Poppins-Bold',
   },
-
 });
 
 export default WelcomeScreen;

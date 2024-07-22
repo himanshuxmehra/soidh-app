@@ -1,12 +1,19 @@
-import { Image, StyleSheet, Text, TextInput, View, Pressable } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Pressable,
+} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { COLORS } from '../constants/theme';
+import {COLORS} from '../constants/theme';
 
 const SearchBar = () => {
   const [text, onChangeText] = React.useState('');
   function onTouch() {
-    onChangeText('')
+    onChangeText('');
   }
   return (
     <View>
@@ -15,7 +22,7 @@ const SearchBar = () => {
           <TextInput
             style={[styles.searchTextInput]}
             onChangeText={onChangeText}
-            placeholder='Search Photos, Things, Places'
+            placeholder="Search Photos, Things, Places"
             placeholderTextColor={COLORS.secondary}
             value={text}
           />
@@ -24,8 +31,8 @@ const SearchBar = () => {
           <Image
             source={require('../../assets/search.png')}
             style={{
-              width:24,
-              height:24,
+              width: 24,
+              height: 24,
             }}
           />
         </View>

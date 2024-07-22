@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, {AxiosResponse, AxiosError} from 'axios';
 
 // export const BASE_URL = 'https://soidh-sv.halfstackengineer.xyz'; // API URL
 export const BASE_URL = 'http://10.0.2.2:3333'; // API URL
@@ -18,18 +18,18 @@ const api = axios.create({
 
 // Interceptors for handling requests and responses
 api.interceptors.request.use(
-  (config) => {
+  config => {
     // Add any headers, authentication tokens, etc.
     return config;
   },
-  (error) => {
+  error => {
     console.error('Request error:', error);
     return Promise.reject(error);
-  }
+  },
 );
 
 api.interceptors.response.use(
-  (response) => {
+  response => {
     // Handle successful responses
     return response;
   },
@@ -44,18 +44,18 @@ api.interceptors.response.use(
 
     // Pass the error along
     return Promise.reject(error);
-  }
+  },
 );
 
 export const checkPhoneNumber = async (
-  phoneNumber: string
+  phoneNumber: string,
 ): Promise<ApiResponse> => {
   try {
     const body = {
-      phoneNumber: phoneNumber
-    }
+      phoneNumber: phoneNumber,
+    };
     const response: AxiosResponse<ApiResponse> = await api.post('/check', body);
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error in API call:', error);
@@ -64,11 +64,14 @@ export const checkPhoneNumber = async (
 };
 
 export const generateOtp = async (
-  phoneNumber: string
+  phoneNumber: string,
 ): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse<ApiResponse> = await api.post('/generate-otp', { phoneNumber });
-    console.log(response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/generate-otp',
+      {phoneNumber},
+    );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error in generateOtp call:', error);
@@ -77,11 +80,15 @@ export const generateOtp = async (
 };
 
 export const verifyOtp = async (
-  phoneNumber: string, otp: any
+  phoneNumber: string,
+  otp: any,
 ): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse<ApiResponse> = await api.post('/verify-otp', { phoneNumber, otp });
-    console.log(response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post('/verify-otp', {
+      phoneNumber,
+      otp,
+    });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error in verifyOtp call:', error);
@@ -90,15 +97,20 @@ export const verifyOtp = async (
 };
 
 export const getFolders = async (
-  accountId: string, jwtToken: string
+  accountId: string,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-folders', { accountId }, { headers });
-    console.log("sfesdfsdfseiuheq38952y4938y239423========", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/get-folders',
+      {accountId},
+      {headers},
+    );
+    console.log('sfesdfsdfseiuheq38952y4938y239423========', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in getFolders call:', error);
@@ -107,15 +119,22 @@ export const getFolders = async (
 };
 
 export const createFolder = async (
-  accountId: string, jwtToken: string, folderName: string, privacy: boolean
+  accountId: string,
+  jwtToken: string,
+  folderName: string,
+  privacy: boolean,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/create-folder', { accountId, folderName, privacy }, { headers });
-    console.log("createFolder Response=", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/create-folder',
+      {accountId, folderName, privacy},
+      {headers},
+    );
+    console.log('createFolder Response=', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in uploadMedia call:', error);
@@ -124,17 +143,22 @@ export const createFolder = async (
 };
 
 export const uploadMedia = async (
-  data: FormData, jwtToken: string
+  data: FormData,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'multipart/form-data', // Adjust the content type based on your API requirements
     };
-    console.log("reponse-data: ", data)
+    console.log('reponse-data: ', data);
 
-    const response: AxiosResponse<ApiResponse> = await api.post('/upload-media', data, { headers });
-    console.log("reponse-data: ", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/upload-media',
+      data,
+      {headers},
+    );
+    console.log('reponse-data: ', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in uploadMedia call:', error);
@@ -143,15 +167,21 @@ export const uploadMedia = async (
 };
 
 export const getMedia = async (
-  accountId: string, folderId: string, jwtToken: string
+  accountId: string,
+  folderId: string,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-media', { accountId, folderId }, { headers });
-    console.log("getMedia reponse=", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/get-media',
+      {accountId, folderId},
+      {headers},
+    );
+    console.log('getMedia reponse=', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in getMedia call:', error);
@@ -160,15 +190,20 @@ export const getMedia = async (
 };
 
 export const getFolderDetails = async (
- folderId: string, jwtToken: string
+  folderId: string,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-folder-details', { folderId }, { headers });
-    console.log("getFolderDetails reponse=", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/get-folder-details',
+      {folderId},
+      {headers},
+    );
+    console.log('getFolderDetails reponse=', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in getFolderDetails call:', error);
@@ -177,15 +212,22 @@ export const getFolderDetails = async (
 };
 
 export const shareFolder = async (
-  phoneNumber: number, folderId: string, canEdit: boolean, jwtToken: string
+  phoneNumber: number,
+  folderId: string,
+  canEdit: boolean,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/share-folder', { phoneNumber, folderId, canEdit }, { headers });
-    console.log("shareFolder reponse=", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/share-folder',
+      {phoneNumber, folderId, canEdit},
+      {headers},
+    );
+    console.log('shareFolder reponse=', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in shareFolder call:', error);
@@ -194,15 +236,20 @@ export const shareFolder = async (
 };
 
 export const getSharedFolders = async (
-  phone_number: number, jwtToken: string
+  phone_number: number,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-shared-folders', { phone_number }, { headers });
-    console.log("getSharedFolders reponse=", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/get-shared-folders',
+      {phone_number},
+      {headers},
+    );
+    console.log('getSharedFolders reponse=', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in getSharedFolders call:', error);
@@ -211,15 +258,20 @@ export const getSharedFolders = async (
 };
 
 export const getRecentMedia = async (
-  accountId: string, jwtToken: string
+  accountId: string,
+  jwtToken: string,
 ): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
-    const response: AxiosResponse<ApiResponse> = await api.post('/get-recent-media', { accountId }, { headers });
-    console.log("getRecentMedia reponse=", response.data)
+    const response: AxiosResponse<ApiResponse> = await api.post(
+      '/get-recent-media',
+      {accountId},
+      {headers},
+    );
+    console.log('getRecentMedia reponse=', response.data);
     return response.data;
   } catch (error) {
     console.error('Error in getRecentMedia call:', error);
@@ -227,16 +279,14 @@ export const getRecentMedia = async (
   }
 };
 
-export const checkToken = async (
- jwtToken: string
-): Promise<ApiResponse> => {
+export const checkToken = async (jwtToken: string): Promise<ApiResponse> => {
   try {
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json', // Adjust the content type based on your API requirements
     };
     console.log(headers);
-    const response: AxiosResponse<ApiResponse> = await api.get('/', { headers });
+    const response: AxiosResponse<ApiResponse> = await api.get('/', {headers});
     console.log(response.data);
     return response.data;
   } catch (error) {

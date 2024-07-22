@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import NavigationIcon from './NavigationIcon';
-import { COLORS } from '../constants/theme';
+import {COLORS} from '../constants/theme';
 
 // import { SelectWheel } from '.';
 
@@ -50,17 +50,16 @@ const TabBar = ({state, descriptors, navigation}: any) => {
               styles.mainItemContainer,
               {
                 flex: 1,
-                width: "70%",
-                marginLeft:5,
-                marginRight:5,
-                overflow: "hidden",
-            },
+                width: '70%',
+                marginLeft: 5,
+                marginRight: 5,
+                overflow: 'hidden',
+              },
             ]}>
-            <Pressable
-              onPress={onPress}>
+            <Pressable onPress={onPress}>
               <View
                 style={{
-                  padding:5,
+                  padding: 5,
                 }}>
                 <NavigationIcon route={label} isFocused={isFocused} />
               </View>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
     borderRadius: 1,
-    width:'70%',
+    width: '70%',
     borderColor: '#333B42',
     flexDirection: 'row',
   },
